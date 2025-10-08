@@ -3,18 +3,23 @@
 using namespace std;
 
 // Initialize account data (CREATE)
-bool Account::init(const string& i_id, const string& i_hash, const string& i_email, const string& i_cpf, const string& i_username, const string& i_fullname, const string& i_status) {
-    // Assign input parameters to class members
-    hash = i_hash;
-    cpf = i_cpf;
-    username = i_username;
-    email = i_email;
-    id = i_id;
-    fullname = i_fullname;
-    status = i_status;
-
-    return true; // Initialization successful
-};
+Account::Account(
+    const string& i_id, 
+    const string& i_hash, 
+    const string& i_email, 
+    const string& i_cpf, 
+    const string& i_username, 
+    const string& i_fullname, 
+    const string& i_status): 
+    
+  id(i_id), 
+  hash(i_hash), 
+  email(i_email), 
+  cpf(i_cpf), 
+  username(i_username), 
+  fullname(i_fullname), 
+  status(i_status) 
+{}
 
 // Change account password (UPDATE)
 bool Account::change_password(const string& current_hash, const string& new_hash) {

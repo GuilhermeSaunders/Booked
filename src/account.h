@@ -16,8 +16,13 @@ private:
 
 public:
     // Constructor - CREATE
-    bool init(const string& i_id, const string& i_hash, const string& i_email, 
-              const string& i_cpf, const string& i_username, const string& i_fullname, const string& i_status);
+    Account(const string& i_id,
+            const string& i_hash,
+            const string& i_email,
+            const string& i_cpf,
+            const string& i_username,
+            const string& i_fullname,
+            const string& i_status);
     
     // Getters - READ
     string getId() const { return id; };
