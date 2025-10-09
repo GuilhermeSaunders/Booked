@@ -1,11 +1,11 @@
-#ifndef ACCOUNT_H
-#define ACCOUNT_H
+#ifndef USER_H
+#define USER_H
 #include <iostream>
 #include <string>
 using namespace std;
 
-class Account {
-private:
+class User {
+protected:
     string id;         // Unique account identifier
     string hash;       // Password hash for authentication
     string email;      // Account email
@@ -16,7 +16,7 @@ private:
 
 public:
     // Constructor - CREATE
-    Account(const string& i_id,
+    User(const string& i_id,
             const string& i_hash,
             const string& i_email,
             const string& i_cpf,
@@ -32,6 +32,19 @@ public:
     string getEmail() const { return email; };
     string getHash() const { return hash; };
     string getStatus() const { return status; };  // Returns if user is renting or lending
+};
+
+class Account: public User{
+
+    public:
+    Account(const string& i_id,
+                 const string& i_hash,
+                 const string& i_email,
+                 const string& i_cpf,
+                 const string& i_username,
+                 const string& i_fullname,
+                 const string& i_status);
+
 
     // Update methods - UPDATE
     bool change_password(const string& current_hash, const string& new_hash); // Change password
@@ -44,4 +57,5 @@ public:
     // Set account status: renting or lending
     void setStatus(string status); 
 };
+
 #endif

@@ -1,6 +1,22 @@
-#include "account.h"
+#include "user.h"
 #include <iostream>
 using namespace std;
+
+User::User(const string& i_id,
+           const string& i_hash,
+           const string& i_email,
+           const string& i_cpf,
+           const string& i_username,
+           const string& i_fullname,
+           const string& i_status): 
+  id(i_id),
+  hash(i_hash),
+  email(i_email),
+  cpf(i_cpf),
+  username(i_username),
+  fullname(i_fullname),
+  status(i_status)
+{}
 
 // Initialize account data (CREATE)
 Account::Account(
@@ -10,16 +26,7 @@ Account::Account(
     const string& i_cpf, 
     const string& i_username, 
     const string& i_fullname, 
-    const string& i_status): 
-    
-  id(i_id), 
-  hash(i_hash), 
-  email(i_email), 
-  cpf(i_cpf), 
-  username(i_username), 
-  fullname(i_fullname), 
-  status(i_status) 
-{}
+    const string& i_status): User(i_id, i_hash, i_email, i_cpf, i_username, i_fullname, i_status){}
 
 // Change account password (UPDATE)
 bool Account::change_password(const string& current_hash, const string& new_hash) {
