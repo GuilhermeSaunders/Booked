@@ -1,5 +1,4 @@
 #include "user.h"
-#include <iostream>
 using namespace std;
 
 User::User(const string& i_id,
