@@ -4,14 +4,14 @@
 #include <string>
 using namespace std;
 
-class product {
+class Product {
     private:
         float rentValue, consideredValue, duration; //duration => avarege duration of time the product takes to be consumed
 
         //retirar productType => sem utilidade
-        string productType, owner, genre, ownersConsiderations, name, description, idiom;
+        string productType, owner, genre, ownersConsiderations, name, description, idiom, recommendedAge;
 
-        int rentalPeriod, recommendedAge, id;
+        int rentalPeriod, id;
     
     public:
         virtual void showInfor() const = 0;
@@ -49,11 +49,11 @@ class product {
         void setIdiom(string idiom);
         const string& getIdiom() const;
 
+        void setRecommendedAge(string recommendedAge = "Age recommendation not provided");
+        const string& getRecommendedAge() const;
+
         void setRentalPeriod(int rentalPeriod);
         int getRentalPeriod() const;
-
-        void setRecommendedAge(int recommendedAge);
-        int getRecommendedAge() const;
 
         void setId(int id);
         int getId() const;
