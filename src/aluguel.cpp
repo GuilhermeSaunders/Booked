@@ -1,90 +1,76 @@
-#include "aluguel.h"
+#include "rental.h"
 
-// Métodos
-    // Settar o status do livro (Alugado, disponivel, em falta...)
-    void Aluguel::setStatus(const string& novoStatus){
-        status = novoStatus;
+// Methods
+    // Constructor
+    Rental::Rental(int id, string lenderName, string borrowerName, int duration_days, string start_date, double dailyRateValue)
+    : transactionId(id), lender(lenderName), borrower(borrowerName), duration(duration_days), startDate(start_date), dailyRate(dailyRateValue) {};
+
+    // Set the rental status (Rented, Available, Out of Stock...)
+    void Rental::setStatus(const string& newStatus) {
+        status = newStatus;
     }
-    // Id da transação
-    int Aluguel::getIdTransacao(){
-        return idTransacao;
+
+    // Transaction ID
+    int Rental::getTransactionId() const { return transactionId; }
+
+    // Duration of the rental period
+    int Rental::getDuration() const {
+        return duration < 0 ? 0 : duration;
     }
-    // Tempo que a pessoa deseja alugar o livro
-    int Aluguel::getTempo(){
-        if (tempo <= 0){
-            tempo = 0;
-        }
-        return tempo;
-    }
-    // Preço final do livro (Dependendo do tempo, de multas, se estendeu, etc)
-    double Aluguel::getValorFinal(){
-        return valorFinal;
-    }
+
     // Status
-    string Aluguel::getStatus(){
-        return status;
-    }
-    // Quem cedeu o livro
-    string Aluguel::getQuemCedeu(){
-        return QuemCedeu;
-    }
-    // Quem pegou o livro
-    string Aluguel::getQuemRecebeu(){
-        return QuemRecebeu;
-    }
-    // Settar quem cedeu
-    void Aluguel::setQuemCedeu(const string& locatario){
-        QuemCedeu = locatario;
-    }
-    // Settar quem recebeu
-    void Aluguel::setQuemRecebeu(const string& locador){
-        QuemRecebeu = locador;
-    }
-    // Pegar data de inicio para depois somar com tempo e verificar se esta atrasado
-    void Aluguel::setDataInicio(const string& dataInicio){
-        this->dataInicio = dataInicio;
-    }
-    string Aluguel::getDataInicio(){
-        return dataInicio;
-    }
+    string Rental::getStatus() const { return status; }
 
-    // Essa o chat fez, para calcular a Data final e ver se esta atrasado
-    string Aluguel::calcularDataFinal() {
-        // Exemplo simples: se dataInicio = "2025-10-08" e tempo = 7 dias
-        // Aqui você precisa converter a string em ano, mes, dia
-        int ano = stoi(dataInicio.substr(0,4));
-        int mes = stoi(dataInicio.substr(5,2));
-        int dia = stoi(dataInicio.substr(8,2));
+    // Who lent the item
+    string Rental::getLender() const { return lender; }
 
-        dia += tempo; // somando dias
+    // Who received the item
+    string Rental::getBorrower() const { return borrower; }
 
-        // Ajuste simples de meses (não cobre todos os casos, só exemplo)
-        int diasNoMes[] = {31,28,31,30,31,30,31,31,30,31,30,31};
-        while(dia > diasNoMes[mes-1]){
-            dia -= diasNoMes[mes-1];
-            mes++;
-            if(mes > 12){
-                mes = 1;
-                ano++;
+    double Rental::getDailyRate() const { return dailyRate; }
+
+    string Rental::getStartDate() const { return startDate; }
+
+    // Method to calculate the end date and check if it is overdue
+    string Rental::calculateEndDate() {
+        // Simple example: if startDate = "2025-10-08" and duration = 7 days
+        // Here you need to convert the string into year, month, and day
+        int year = stoi(startDate.substr(0,4));
+        int month = stoi(startDate.substr(5,2));
+        int day = stoi(startDate.substr(8,2));
+
+        day += duration; // adding days
+
+        // Simple month adjustment (does not cover all cases, just an example)
+        int daysInMonth[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+        while (day > daysInMonth[month - 1]) {
+            day -= daysInMonth[month - 1];
+            month++;
+            if (month > 12) {
+                month = 1;
+                year++;
             }
         }
 
         char buffer[11];
-        sprintf(buffer,"%04d-%02d-%02d", ano, mes, dia);
+        sprintf(buffer, "%04d-%02d-%02d", year, month, day);
         return string(buffer);
     }
 
+    // Functionalities
+    bool Rental::isOverdue(const string& currentDate) {
+        string endDate = calculateEndDate();
 
-    // Funcionalidades
-    bool Aluguel::estaAtrasado(const string& dataHoje){
-        string dataFim = calcularDataFinal();
-
-        if(dataHoje > dataFim){
+        if (currentDate > endDate) {
             return true;
         }
         return false;
     }
-    void Aluguel::concluirAluguel(){
-        status = "concluído";
+
+    void Rental::completeRental() {
+        status = "completed";
     }
-    
+
+    double Rental::finalPrice() const {
+        return dailyRate * duration;
+    }

@@ -1,53 +1,37 @@
-#ifndef ALUGUEL_H
-#define ALUGUEL_H
+#ifndef RENTAL_H
+#define RENTAL_H
 #include <string>
 using namespace std;
 
-class Aluguel{
-    private:
-    int idTransacao;
-    int tempo;
-    string QuemCedeu;
-    string QuemRecebeu;
-    double valorFinal;
-    string dataInicio;
+class Rental {
+private:
+    int transactionId;
+    int duration;
+    string lender;
+    string borrower;
+    double dailyRate;
+    string startDate;
     string status;
 
-    public:
-    // Construtor
-    Aluguel(int id, string cedente, string recebedor, int dias, string inicio, double valorDia);
+public:
+    // Constructor
+    Rental(int id, string lender, string borrower, int duration_days, string start_date, double dailyRate);
 
+    // Methods
+    void setStatus(const string& newStatus);
+    int getTransactionId() const;
+    int getDuration() const;
+    string getStatus() const;
+    string getLender() const;
+    string getBorrower() const;
+    string getStartDate() const;
+    double getDailyRate() const;
 
-    // Métodos
-    void setStatus(const string& novoStatus);
-    int getIdTransacao();
-    int getTempo();
-    double getValorFinal();
-    string getStatus();
-    string getQuemCedeu();
-    string getQuemRecebeu();
-    void setQuemCedeu(const string& locatario);
-    void setQuemRecebeu(const string& locador);
-
-    void setDataInicio(const string& dataInicio);
-    string getDataInicio();
-    string calcularDataFinal();
- 
-
-
-
-    // Funcionalidades
-    bool estaAtrasado(const string& dataHoje);
-    void concluirAluguel();
-    
+    // Functionalities
+    bool isOverdue(const string& currentDate);
+    void completeRental();
+    string calculateEndDate();
+    double finalPrice() const;
 };
+
 #endif
-
-//void iniciarAluguel();
-//void concluirAluguel(string dataDevolucao);
-//void cancelarAluguel();
-//bool estaAtrasado(string dataHoje);
-//int diasRestantes(string dataHoje);
-//double calcularMulta(string dataHoje, double taxaPorDia);
-//double calcularValorFinal(string dataHoje, double taxaPorDia);
-
