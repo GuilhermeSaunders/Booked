@@ -10,25 +10,15 @@
         status = newStatus;
     }
 
-    // Transaction ID
+    // Getters
     int Rental::getTransactionId() const { return transactionId; }
-
-    // Duration of the rental period
     int Rental::getDuration() const {
         return duration < 0 ? 0 : duration;
     }
-
-    // Status
     string Rental::getStatus() const { return status; }
-
-    // Who lent the item
     string Rental::getLender() const { return lender; }
-
-    // Who received the item
     string Rental::getBorrower() const { return borrower; }
-
     double Rental::getDailyRate() const { return dailyRate; }
-
     string Rental::getStartDate() const { return startDate; }
 
     // Method to calculate the end date and check if it is overdue
