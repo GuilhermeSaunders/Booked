@@ -7,12 +7,10 @@ Account::Account(
     const string& i_id,
     const string& i_hash,
     const string& i_username,
-    const string& i_status,
     const User& i_user)
     : id(i_id),
       hash(i_hash),
       username(i_username),
-      status(i_status),
       user(i_user) {}
     
 //Change account password (UPDATE)
@@ -36,13 +34,9 @@ bool Account::delete_account(const string& current_username, const string& curre
         id.clear();
         username.clear();
         hash.clear();
-        status.clear();
         user = User("", "", ""); // recria o usuário “vazio”
         return true;
     }
     return false;
 }
-//Set Status as Actions Requires it
-void Account::setStatus(const string& temp_status){
-    status = temp_status;
-}
+

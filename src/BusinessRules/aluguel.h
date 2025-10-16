@@ -2,6 +2,7 @@
 #define RENTAL_H
 #include <string>
 using namespace std;
+// nome certo dos arquivos #justiçapordanielmolestador 
 
 class Rental {
 private:
@@ -9,13 +10,15 @@ private:
     int duration;
     string lender;
     string borrower;
-    double dailyRate;
+    float dailyRate;
     string startDate;
     string status;
+    string productType;
+    int productId; // precisa implementar o get e set e implementar no construtor 
 
 public:
     // Constructor
-    Rental(int id, string lender, string borrower, int duration_days, string start_date, double dailyRate);
+    Rental(int id, string lender, string borrower, int duration_days, string start_date, float dailyRate);
 
     // Methods
     void setStatus(const string& newStatus);
@@ -25,7 +28,8 @@ public:
     string getLender() const;
     string getBorrower() const;
     string getStartDate() const;
-    double getDailyRate() const;
+    float getDailyRate() const;
+    string getProductType() const {return productType;}
 
     // Functionalities
     bool isOverdue(const string& currentDate);

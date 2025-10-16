@@ -8,20 +8,17 @@ class Account{
     private:
     string id;         // Unique account identifier
     string hash;       // Password hash for authentication
-    string username;   // Account username
-    string status;     // Account status: "renting" or "lending"
+    string username;   // Account username    
     User user;
 
     public:
     Account(const string& i_id,
                  const string& i_hash,
                  const string& i_username,
-                 const string& i_status,
                  const User& i_user);
 
     const string& getHash() const { return hash; };
     const string& getId() const { return id; };
-    const string& getStatus() const { return status; };  // Returns if user is renting or lending
     const string& getUsername() const { return username; };
     const User& getUser() const { return user; };
 
@@ -33,7 +30,5 @@ class Account{
     // Delete method - DELETE
     bool delete_account(const string& current_username, const string& current_hash); // Delete account if credentials match
 
-    // Set account status: renting or lending
-    void setStatus(const string& temp_status); 
 };
 #endif
