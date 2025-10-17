@@ -34,7 +34,7 @@ bool Account::delete_account(const string& current_username, const string& curre
         id.clear();
         username.clear();
         hash.clear();
-        user = User("", "", ""); // recria o usuário “vazio”
+        user = User("", "", "", ""); // recria o usuário “vazio”
         return true;
     }
     return false;
