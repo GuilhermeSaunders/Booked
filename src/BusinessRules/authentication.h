@@ -6,32 +6,25 @@ class Authentication {
 
     private:
 
-    string username; // Username
-    size_t passwordHash; // The validated password
-    string email; // Users's e-mail
-    bool loggedIn; // True if the user's credentials are correct / if user is logged in
-    int failedAttempts; // The amount of failed login attempts
-    const int maxFailedAttempts = 3; // Maximum number of allowed failed login attempts
-
-    size_t hashPassword(const string& password); // Function that creates the password's hash
- 
+    string username; 
+    size_t passwordHash; // Stores the hashed representation of the user's password for secure authentication
+    string email; 
+    string cpf;
+    string birthday; 
+    
+    size_t hashPassword(const string& password); 
 
     public:
 
     Authentication();
 
-    void createUser(string username, string password, string email);
-
-    bool login(string username, string password);
-
-    void logout();
-
-    bool isLoggedIn();
-
+    bool createUser(string& username, string& password, string& email, string& cpf, string& birthday);
+ 
     // getters
 
     string getUsername() const { return username; };
     string getEmail() const { return email; };
-    bool getStatus() const { return loggedIn; };    
+    string getCpf() const { return cpf; };
+    string getBirthday() const { return email; };
 
 };

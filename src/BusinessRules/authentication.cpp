@@ -8,36 +8,33 @@ Authentication::Authentication() {
     username = "";
     passwordHash = 0;
     email = "";
-    loggedIn = false;
-    failedAttempts = 0;
+    cpf = "";
+    birthday = "";
+    
 }
 
 size_t Authentication::hashPassword(const string& password) {
     hash<string> hasher;
-    return hasher(password); // retorna um número único representando a senha
+    return hasher(password); 
 }
 
-void Authentication::createUser(string username, string password, string email) {
-    if ((username.length() > 0 && username.length() < 15) && (password.length() > 5)) {
-        this->username = username;
-        passwordHash = hashPassword(password); 
-        this->email = email;
-        loggedIn = false;
-        failedAttempts = 0;
-    }
+bool Authentication::createUser(string& username, string& password, string& email, string& cpf, string& birthday) {
+    if (username.length() < 3 || username.length() > 15) { return false; } ;
+
+    if (email.find('@') == string::npos) { return false; };
+
+    if (password.length() <= 5) { return false; };
+
+    if (cpf.length() != 11) { return false; };
+
+    if ((birthday.length() != 10) && (birthday[2] != '/' || birthday[5] != '/')) { return false; };
+
+    this->username = username;
+    this->passwordHash = hashPassword(password);
+    this->email = email;
+    this->cpf = cpf;
+    this->birthday = birthday;
+
+    return true;
 }
 
-bool Authentication::login(string username, string password) {
-    if ((this->username == username) && (hashPassword(password) == passwordHash)) {
-        loggedIn = true;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void Authentication::logout() {
-    if (loggedIn == true) {
-        loggedIn = false;
-    }
-}
