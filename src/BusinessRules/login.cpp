@@ -30,7 +30,7 @@ bool Login::login(const Account& account, const string& inputUsername, const str
 
 void Login::logout() {
 
-    if (loggedIn = true) {
+    if (loggedIn == true) {
 
         loggedIn = false;
     }
