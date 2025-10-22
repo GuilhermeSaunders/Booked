@@ -2,7 +2,7 @@
 
 // Methods
     // Constructor
-    Rental::Rental(int id, string lenderName, string borrowerName, int duration_days, string start_date, double dailyRateValue)
+    Rental::Rental(int id, string lenderName, string borrowerName, int duration_days, string start_date, float dailyRateValue)
     : transactionId(id), lender(lenderName), borrower(borrowerName), duration(duration_days), startDate(start_date), dailyRate(dailyRateValue) {};
 
     // Set the rental status (Rented, Available, Out of Stock...)
@@ -18,7 +18,7 @@
     string Rental::getStatus() const { return status; }
     string Rental::getLender() const { return lender; }
     string Rental::getBorrower() const { return borrower; }
-    double Rental::getDailyRate() const { return dailyRate; }
+    float Rental::getDailyRate() const { return dailyRate; }
     string Rental::getStartDate() const { return startDate; }
 
     // Method to calculate the end date and check if it is overdue
