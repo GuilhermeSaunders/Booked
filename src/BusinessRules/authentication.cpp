@@ -4,14 +4,7 @@
 
 using namespace std;
 
-Authentication::Authentication() {
-    username = "";
-    passwordHash = 0;
-    email = "";
-    cpf = "";
-    birthday = "";
-    
-}
+
 
 size_t Authentication::hashPassword(const string& password) {
     hash<string> hasher;

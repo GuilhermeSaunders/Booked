@@ -16,7 +16,7 @@ class Authentication {
 
     public:
 
-    Authentication();
+
 
     bool createUser(string& username, string& password, string& email, string& cpf, string& birthday);
  
