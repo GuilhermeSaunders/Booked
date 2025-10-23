@@ -14,9 +14,9 @@ size_t Authentication::hashPassword(const string& password) {
 bool Authentication::createUser(string& username, string& password, string& email, string& cpf, string& birthday) {
     if (username.length() < 3 || username.length() > 15) { return false; } ;
 
-    if (email.find('@') == string::npos) { return false; };
+    if ((email.find('@') == string::npos) && (email.find('.com') == string::npos)) { return false; };
 
-    if (password.length() <= 5) { return false; };
+    if (password.length() <= 4) { return false; };
 
     if (cpf.length() != 11) { return false; };
 

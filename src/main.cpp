@@ -35,8 +35,7 @@ int main(){
             cin>>input_birthday;
 
             Authentication authentication;
-            is_auth = authentication.createUser(input_username, input_email, 
-            input_password, input_cpf, input_birthday);
+            is_auth = authentication.createUser(input_username,input_password, input_email, input_cpf, input_birthday);
             cout << is_auth;
             
 ;

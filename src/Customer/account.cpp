@@ -5,7 +5,7 @@ using namespace std;
 // Initialize account data (CREATE
 Account::Account(
     const string& i_id,
-    const string& i_hash,
+    const size_t& i_hash,
     const string& i_username,
     const User& i_user)
     : id(i_id),
@@ -14,7 +14,7 @@ Account::Account(
       user(i_user) {}
     
 //Change account password (UPDATE)
-bool Account::change_password(const string& current_hash, const string& new_hash) {
+bool Account::change_password(const size_t& current_hash, const size_t& new_hash) {
     if (hash != current_hash) {
         return false; // Current password incorrect
     }
