@@ -1,45 +1,71 @@
-// #include <iostream>
-// #include "../src/Customer/account.h"
-// #include "../src/Customer/user.h"
-// #include "../src/BusinessRules/validate.cpp"
+#include "httplib.h"
+#include <iostream>
+#include <thread>
+#include <atomic>
+#include <chrono>
 
-// using namespace std;
+class Motor {
+public:
+    void iniciar() {
+        if (rodando) return;
+        rodando = true;
+        threadLoop = std::thread(&Motor::loop, this);
+    }
 
-// int main(){
+    void parar() {
+        rodando = false;
+        if (threadLoop.joinable())
+            threadLoop.join();
+    }
 
-//     bool running = true;
+    bool status() const {
+        return rodando;
+    }
 
-//     string input_cmmd;
-//     string input_username;
-//     string input_password;
-//     string input_email;
-//     string input_cpf;
-//     string input_birthday;
+private:
+    std::atomic<bool> rodando{false};
+    std::thread threadLoop;
 
-//     bool is_auth = false;
+    void loop() {
+        while (rodando) {
+            std::cout << "[Motor] Rodando..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+        std::cout << "[Motor] Parado." << std::endl;
+    }
+};
 
-//     while(running){
-//         cout<<"Digite 'Login' ou 'Criar'.\n";
-//         cin>>input_cmmd;
+int main() {
+    httplib::Server svr;
+    Motor motor;
 
-//         if (input_cmmd == "Criar"){
-//             cout<<"Digite seu Username\n";
-//             cin>>input_username;
-//             cout<<"Digite seu Email\n";
-//             cin>>input_email;
-//             cout<<"Digite sua senha\n";
-//             cin>>input_password;
-//             cout<<"Digite seu CPF\n";
-//             cin>>input_cpf;
-//             cout<<"Digite seu Aniversário no formato dd/mm/yyyy\n";
-//             cin>>input_birthday;
+    // Habilita CORS
+    svr.set_default_headers({
+        {"Access-Control-Allow-Origin", "*"},
+        {"Access-Control-Allow-Methods", "GET, POST, OPTIONS"},
+        {"Access-Control-Allow-Headers", "Content-Type"}
+    });
 
-//             Validate authentication;
-//             is_auth = authentication.createUser(input_username,input_password, input_email, input_cpf, input_birthday);
-//             cout << is_auth;
-            
-// ;
-//         };
-//     };
-//     return 0;
-// };
+    svr.Options(R"(.*)", [](const httplib::Request&, httplib::Response& res) {
+        res.status = 200;
+    });
+
+    svr.Post("/api/start", [&](const httplib::Request&, httplib::Response& res) {
+        motor.iniciar();
+        res.set_content("Motor iniciado", "text/plain");
+    });
+
+    svr.Post("/api/stop", [&](const httplib::Request&, httplib::Response& res) {
+        motor.parar();
+        res.set_content("Motor parado", "text/plain");
+    });
+
+    svr.Get("/api/status", [&](const httplib::Request&, httplib::Response& res) {
+        res.set_content(motor.status() ? "Rodando" : "Parado", "text/plain");
+    });
+
+    //INCLUIR NOSSAS ROTAS AQUI!!!!!!!!!!!!!!!!!!!!!!!!
+
+    std::cout << "Servidor rodando em http://localhost:8080\n";
+    svr.listen("0.0.0.0", 8080);
+}
