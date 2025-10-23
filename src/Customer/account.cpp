@@ -5,7 +5,7 @@ using namespace std;
 // Initialize account data (CREATE
 Account::Account(
     const string& i_id,
-    const string& i_hash,
+    const size_t& i_hash,
     const string& i_username,
     const User& i_user)
     : id(i_id),
@@ -14,7 +14,7 @@ Account::Account(
       user(i_user) {}
     
 //Change account password (UPDATE)
-bool Account::change_password(const string& current_hash, const string& new_hash) {
+bool Account::change_password(const size_t& current_hash, const size_t& new_hash) {
     if (hash != current_hash) {
         return false; // Current password incorrect
     }
@@ -28,12 +28,25 @@ bool Account::change_username(const string& new_username){
     return true;
 }
 
+const size_t& Account::getHash() const {
+    return hash;
+}
+const string& Account::getId() const { 
+    return id; 
+}
+const string& Account::getUsername() const {
+     return username;
+}
+const User& Account::getUser() const {
+     return user;
+}
+
 // Delete account if username and password hash match (DELETE)
-bool Account::delete_account(const string& current_username, const string& current_hash) {
+bool Account::delete_account(const string& current_username, const size_t& current_hash) {
     if (username == current_username && hash == current_hash) {
         id.clear();
         username.clear();
-        hash.clear();
+        hash = 0;
         user = User("", "", "", ""); // recria o usuário “vazio”
         return true;
     }

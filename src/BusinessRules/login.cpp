@@ -17,13 +17,14 @@ bool Login::login(const Account& account, const string& inputUsername, const str
         return false;
     }
 
-    if ((inputUsername == account.getUsername()) && (inputPassword == account.getHash())) {
+    if ((inputUsername == account.getUsername()) && (hashPassword(inputPassword) == account.getHash())) {
 
         loggedIn = true;
         return true;
     } else {
         loggedIn = false;
         failedAttempts++;
+        return false;
     }
 
 }
@@ -45,4 +46,9 @@ bool Login::isLoggedIn() {
 
         return false;
     }
+}
+
+size_t Login::hashPassword(const string& password) {
+    hash<string> hasher;
+    return hasher(password); 
 }

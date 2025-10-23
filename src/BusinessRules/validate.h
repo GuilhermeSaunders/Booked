@@ -25,6 +25,6 @@ class Authentication {
     string getUsername() const { return username; };
     string getEmail() const { return email; };
     string getCpf() const { return cpf; };
-    string getBirthday() const { return email; };
+    string getBirthday() const { return birthday; };
 
 };

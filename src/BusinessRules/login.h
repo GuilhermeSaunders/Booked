@@ -11,6 +11,8 @@ class Login {
     int failedAttempts;     // Counts failed login attempts
     const int maxFailedAttempts = 3; // Maximum allowed failed attempts
 
+    size_t hashPassword(const string& password);
+
     public:
 
     Login();

@@ -9,20 +9,26 @@ User::User(const string& i_email,
       email(i_email),
       birthday(i_birthday) {}
 
-// Update CPF or full name based on the 'update' code (UPDATE)
-int User::update_info(const string& new_cpf, const string& new_fullname, const string& new_birthday, int update){
-    if(update == 0){
-        return 0; // No update
-    } else if(update == 1){
-        cpf = new_cpf; // Update CPF
-        return 1;
-    } else if(update == 2){
-        fullname = new_fullname; // Update full name
-        return 2;
-    } else if(update == 3){
-        birthday = new_birthday; // Update full name
-        return 3;
-    } else{
-        return update; // Invalid update code, return as it is
-    }
+string User::getCpf() const { 
+    return cpf; 
 }
+string User::getFullname() const { 
+    return fullname; 
+}
+string User::getEmail() const { 
+    return email;
+}
+string User::getBirthday() const { 
+    return birthday; 
+}
+
+// Update CPF or full name based on the 'update' code (UPDATE)
+    void User::update_cpf(const string& new_cpf){
+        cpf = new_cpf;
+    }; // Update CPF or full name
+    void User::update_fullname(const string& new_fullname){
+        fullname = new_fullname;
+    };
+    void User::update_birthday(const string& new_birthday){
+        birthday = new_birthday;
+    };

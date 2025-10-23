@@ -17,16 +17,17 @@ public:
             const string& i_fullname, const string& i_birthday);
     
     // Getters - READ
-    string getCpf() const { return cpf; };
-    string getFullname() const { return fullname; };
-    string getEmail() const { return email; };
-    string getBirdthay() const { return birthday; };
+    string getCpf() const;
+    string getFullname() const;
+    string getEmail() const;
+    string getBirthday() const;
 
     //cod de daniel
 
     //COLOCAR BIRTHDAY!!!!!!!!!!!!!! 
-    int update_info(const string& new_cpf, const string& new_fullname, const string& new_birthday, int update); // Update CPF or full name
-
+    void update_info(const string& new_cpf); // Update CPF or full name
+    void update_info(const string& new_fullname);
+    void update_info(const string& new_birthday);
 };
 
 #endif
