@@ -25,9 +25,9 @@ public:
     //cod de daniel
 
     //COLOCAR BIRTHDAY!!!!!!!!!!!!!! 
-    void update_info(const string& new_cpf); // Update CPF or full name
-    void update_info(const string& new_fullname);
-    void update_info(const string& new_birthday);
+    void update_cpf(const string& new_cpf); // Update CPF or full name
+    void update_fullname(const string& new_fullname);
+    void update_birthday(const string& new_birthday);
 };
 
 #endif
