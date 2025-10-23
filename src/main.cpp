@@ -1,39 +1,8 @@
 #include "httplib.h"
 #include <iostream>
-#include <thread>
-#include <atomic>
-#include <chrono>
+#include "motor.h"
 
-class Motor {
-public:
-    void iniciar() {
-        if (rodando) return;
-        rodando = true;
-        threadLoop = std::thread(&Motor::loop, this);
-    }
-
-    void parar() {
-        rodando = false;
-        if (threadLoop.joinable())
-            threadLoop.join();
-    }
-
-    bool status() const {
-        return rodando;
-    }
-
-private:
-    std::atomic<bool> rodando{false};
-    std::thread threadLoop;
-
-    void loop() {
-        while (rodando) {
-            std::cout << "[Motor] Rodando..." << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-        std::cout << "[Motor] Parado." << std::endl;
-    }
-};
+using namespace std;
 
 int main() {
     httplib::Server svr;
@@ -66,6 +35,6 @@ int main() {
 
     //INCLUIR NOSSAS ROTAS AQUI!!!!!!!!!!!!!!!!!!!!!!!!
 
-    std::cout << "Servidor rodando em http://localhost:8080\n";
+    cout << "Servidor rodando em http://localhost:8080\n";
     svr.listen("0.0.0.0", 8080);
 }
