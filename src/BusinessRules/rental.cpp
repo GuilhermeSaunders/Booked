@@ -1,4 +1,4 @@
-#include "aluguel.h"
+#include "rental.h"
 
 // Methods
     // Constructor
