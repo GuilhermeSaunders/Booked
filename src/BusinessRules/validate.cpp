@@ -85,6 +85,7 @@ bool Validate::validateBirthday(const string& birthday) {
             return false;
         }
     }
+    return true;
     
 }
 
@@ -107,6 +108,8 @@ bool Validate::validateFullname(const string& fullname) {
             }
         }
     }
+
+    return true;
 }
 
 User Validate::createUser(const string& email, const string& cpf, const string& fullname, const string& birthday) {
