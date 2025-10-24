@@ -1,3 +1,5 @@
+#ifndef VALIDATE_H
+#define VALIDATE_H
 #include <string>
 
 using namespace std;
@@ -36,3 +38,4 @@ class Validate {
     string getBirthday() const { return birthday; };
 
 };
+#endif

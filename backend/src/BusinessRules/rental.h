@@ -2,7 +2,7 @@
 #define RENTAL_H
 #include <string>
 using namespace std;
-// nome certo dos arquivos #justiçapordanielmolestador 
+
 
 class Rental {
 private:

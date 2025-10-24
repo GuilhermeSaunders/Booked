@@ -1,5 +1,7 @@
+#ifndef LOGIN_H
+#define LOGIN_H
 #include <string>
-#include "account.h"
+#include "../Customer/account.h"
 
 using namespace std;
 
@@ -23,3 +25,4 @@ class Login {
 
     bool isLoggedIn();
 };
+#endif
