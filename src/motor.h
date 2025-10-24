@@ -3,6 +3,7 @@
 
 #include <thread>
 #include <atomic>
+using namespace std;
 
 class Motor {
 public:
@@ -15,10 +16,10 @@ public:
     bool status() const;
 
 private:
-    std::atomic<bool> rodando;
-    std::thread threadLoop;
+    atomic<bool> rodando;
+    thread threadLoop;
 
-    void loop(); // Método privado
+    void loop();
 };
 
 #endif // MOTOR_H

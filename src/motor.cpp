@@ -1,6 +1,7 @@
 #include "motor.h"
 #include <iostream>
 #include <chrono>
+using namespace std;
 
 // Construtor: inicializa a flag 'rodando'
 Motor::Motor() : rodando(false) {
@@ -13,11 +14,11 @@ Motor::~Motor() {
 }
 
 void Motor::iniciar() {
-    // Usa .load() para ler um std::atomic (boa prática)
+    // Usa .load() para ler um atomic (boa prática)
     if (rodando.load()) return;
 
-    rodando = true; // Usa = (store) para escrever em um std::atomic
-    threadLoop = std::thread(&Motor::loop, this);
+    rodando = true; // Usa = (store) para escrever em um atomic
+    threadLoop = thread(&Motor::loop, this);
 }
 
 void Motor::parar() {
@@ -31,13 +32,13 @@ bool Motor::status() const {
     return rodando.load(); // Usa .load() para ler
 }
 
-// --- Métodos Privados ---
+
 
 void Motor::loop() {
     while (rodando.load()) {
-        // Adiciona std:: para cout, endl, this_thread, e chrono
-        std::cout << "[Motor] Rodando..." << std::endl;
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        // Adiciona para cout, endl, this_thread, e chrono
+        cout << "[Motor] Rodando..." <<endl;
+        this_thread::sleep_for(chrono::seconds(1));
     }
-    std::cout << "[Motor] Parado." << std::endl;
+    cout << "[Motor] Parado." <<endl;
 }

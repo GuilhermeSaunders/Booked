@@ -1,5 +1,6 @@
-using namespace std;
+#include <iostream>
 #include "login.h"
+using namespace std;
 
 Login::Login() {
     loggedIn = false;
