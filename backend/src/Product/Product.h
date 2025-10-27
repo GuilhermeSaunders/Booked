@@ -1,62 +1,54 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <string>
-using namespace std;
+#include <string>    
 
 class Product {
+
     private:
-        float rentValue, consideredValue, duration; //duration => avarege duration of time the product takes to be consumed
+        float rentValue; //duration => avarege duration of time the product takes to be consumed
+        std::string id ,owner, genre, name, description, idiom, recommendedAge;
+        bool isRented;
 
-        //retirar productType => sem utilidade
-        string productType, owner, genre, ownersConsiderations, name, description, idiom, recommendedAge;
 
-        int rentalPeriod, id;
-    
     public:
-        virtual void showInfor() const = 0;
-        virtual void dealTerms() const = 0;
 
-        void setRentValue(float rentvalue); 
-        const float getRentValue() const;
+        Product(float rentValue,
+         std::string id,
+         std::string owner,
+         std::string name,
+         std::string description,  std::string idiom,
+         std::string recommendedAge,  std::string genre, bool isRented);
 
-        // consideredValue => if you would seal the product, at wich price would you sell??
-        // it will be the guarantee value 
-        void setConsideredValue(float consideredValue);
-        const float getConsideredValue() const;
+        virtual ~Product() = default;
 
-        void setDuration(float duration);
-        const float getDuration() const;
+        void setRentValue(float rentvalue);
+        float getRentValue() const;
 
-        void setProductType(string productType);
-        const string& getProductType() const;
+        void setOwner(std::string owner);
+        const std::string& getOwner() const;
 
-        void setOwner(string owner);
-        const string& getOwner() const;
+        void setGenre(std::string genre);
+        const std::string& getGenre() const;
 
-        void setGenre(string genre);
-        const string& getGenre() const;
+        void setName(std::string name);
+        const std::string& getName() const;
 
-        void setOwnersConsiderations(string ownersConsiderations = "No written consideration by the owner");
-        const string& getOwnersConsiderations() const;
+        void setDescription(std::string description);
+        const std::string& getDescription() const;
 
-        void setName(string name);
-        const string& getName() const;
+        void setIdiom(std::string idiom);
+        const std::string& getIdiom() const;
 
-        void setDescription(string description = "No description provided, but you can search the title on the internet and you will, probably, find something");
-        const string& getDescription() const;
+        void setRecommendedAge(std::string recommendedAge);
+        const std::string& getRecommendedAge() const;
 
-        void setIdiom(string idiom);
-        const string& getIdiom() const;
+        void setId(std::string id);
+        const std::string& getId() const;
 
-        void setRecommendedAge(string recommendedAge = "Age recommendation not provided");
-        const string& getRecommendedAge() const;
+        void setIsRented(bool isRented);
+        bool getIsRented() const;
 
-        void setRentalPeriod(int rentalPeriod);
-        int getRentalPeriod() const;
-
-        void setId(int id);
-        int getId() const;
 };
 
 #endif

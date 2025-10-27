@@ -1,33 +1,37 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-#include "Product.h"
+#include <string>
 
+#include "product.h"
 
-class Book : public virtual  Product
+class Book : public Product
 {
+
 private:
     int numPages;
-    string author;
+    std::string author;
+
+
 
 public:
-    Book(
-        string name, string description, string author,
-        string ownersConsiderations, string owner,
-        string genre, string idiom, int rentValue,
-        string recommendedAge, int id
-    );
 
-    ~Book(){}
-
-    void setAuthor(string author){this->author = author;}
-    const string& getAuthor() const {return author;}
+    Book(float rentValue,
+         std::string id,
+         std::string owner,
+         std::string name,
+         std::string description,  std::string idiom,
+         std::string recommendedAge,  std::string genre, bool isRented, int numPages, std::string author);
 
 
-    // conversation about the dealTerms function is important
-    void showInfor() const override;
-    void dealTerms() const override;
+    ~Book() override = default;
 
+
+    void setAuthor(std::string author);
+    const std::string& getAuthor() const;
+
+    void setNumPages(int numPages);
+    int getNumPages() const;
 
 };
 

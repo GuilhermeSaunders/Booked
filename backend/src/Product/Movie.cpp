@@ -1,45 +1,31 @@
-#include "Movie.h"
-#include <iostream>
-#include <thread>
-#include <chrono>
+#include "movie.h"
 
-    /*~Movie(){}
+        Movie :: Movie(float rentValue,
+                std::string id,
+                std::string owner,
+                std::string name,
+                std::string description,  std::string idiom,
+                std::string recommendedAge,  std::string genre, bool isRented, std::string director, std::string mainActors, int duration)
 
-        void setDirector(string director);
-        const string& getDirector() const;
+        : Product( rentValue, std::move(id),
+        std::move(owner),
+        std::move(name),
+        std::move(description), std::move(idiom),
+        std::move(recommendedAge), std::move(genre),  isRented),
+        director(std::move(director)),
+        mainActors(std::move(mainActors)),
+        duration(duration){}
 
-        void setMainActors(string mainActors);
-        const string& getMainActors() const;*/
-    
-        Movie :: Movie(
-            string name, string description,
-            string director, string mainActors,
-            string ownersConsiderations, string owner,
-            string genre, string idiom, int rentValue,
-            string recommendedAge, int id
-        ){  
-            
-            setName(name);
-            setDescription(description);
-            setDirector(director); // not definided 
-            setMainActors(mainActors); // not definided 
-            setOwnersConsiderations(ownersConsiderations);
-            setOwner(owner);
-            setGenre(genre);
-            setIdiom(idiom);
-            setRentValue(rentValue);
-            setRecommendedAge(recommendedAge);
-            setId(id);
+        Movie::~Movie() = default;
 
-            cout << "Your movie has been added to the system. Now other users can access it." << endl; 
-        }
+        void Movie :: setDirector(std::string director) {this->director = std::move(director);}
+        const std::string& Movie :: getDirector() const {return director;}
 
-        Movie :: ~Movie(){
-            
-        }
+        void Movie :: setMainActors(std::string mainActors) {this->mainActors = std::move(mainActors);}
+        const std::string& Movie :: getMainActors() const {return mainActors;}
 
-        void Movie :: setDirector(string director) {this->director = move(director);}
-        const string& Movie :: getDirector() const {return director;}
 
-        void Movie :: setMainActors(string mainActor) {this->mainActors = move(mainActors);}
-        const string& Movie :: getMainActors() const {return mainActors;}
+
+        void Movie :: setDuration(int duration) {this->duration = duration;}
+
+        int Movie :: getDuration() const {return duration;}
