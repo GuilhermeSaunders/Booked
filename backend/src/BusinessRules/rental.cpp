@@ -2,8 +2,8 @@
 
 // Methods
     // Constructor
-    Rental::Rental(int id, string lenderName, string borrowerName, int duration_days, string start_date, float dailyRateValue)
-    : transactionId(id), lender(lenderName), borrower(borrowerName), duration(duration_days), startDate(start_date), dailyRate(dailyRateValue) {};
+    Rental::Rental(int id, int productId, string lenderName, string borrowerName, int duration_days, string start_date, float dailyRateValue)
+    : transactionId(id), productId(productId), lender(lenderName), borrower(borrowerName), duration(duration_days), startDate(start_date), dailyRate(dailyRateValue) {};
 
     // Set the rental status (Rented, Available, Out of Stock...)
     void Rental::setStatus(const string& newStatus) {
@@ -15,6 +15,7 @@
     int Rental::getDuration() const {
         return duration < 0 ? 0 : duration;
     }
+    int Rental::getproductId() const { return productId; }
     string Rental::getStatus() const { return status; }
     string Rental::getLender() const { return lender; }
     string Rental::getBorrower() const { return borrower; }

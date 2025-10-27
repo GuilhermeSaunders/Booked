@@ -14,11 +14,11 @@ private:
     string startDate;
     string status;
     string productType;
-    int productId; // precisa implementar o get e set e implementar no construtor 
+    int productId; 
 
 public:
     // Constructor
-    Rental(int id, string lender, string borrower, int duration_days, string start_date, float dailyRate);
+    Rental(int id, int productId, string lender, string borrower, int duration_days, string start_date, float dailyRate);
 
     // Methods
     void setStatus(const string& newStatus);
@@ -30,6 +30,7 @@ public:
     string getStartDate() const;
     float getDailyRate() const;
     string getProductType() const {return productType;}
+    int getproductId() const;
 
     // Functionalities
     bool isOverdue(const string& currentDate);
