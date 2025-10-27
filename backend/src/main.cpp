@@ -1,6 +1,9 @@
 #include "httplib.h"
 #include <iostream>
 #include "motor.h"
+#include "../Product/Product.h"
+#include "../Product/Book.h"
+#include "../Product/Movie.h"
 #include "json.hpp"
 
 using namespace std;
@@ -57,51 +60,79 @@ int main() {
         res.set_content(j_resposta.dump(4), "application/json");
     });
 
-    //Cadastrar Produto
+    // Cadastrar Produto
     svr.Post("/api/produto/novo", [&](const httplib::Request& req, httplib::Response& res) {
-    json data = json::parse(req.body);
+        json data = json::parse(req.body);
 
-    //Atributos Gerais
-    string tipo = data.value("tipo", "");
-    string nome = data.value("nome", "");
-    string descricao = data.value("descricao", "");
-    double preco = data.value("preco", 0.0);
-    string categoria = data.value("categoria", "");
+        // =========================
+        // Atributos gerais
+        // =========================
+        string tipo = data.value("tipo", "");
+        string nome = data.value("nome", "");
+        string descricao = data.value("descricao", "");
+        double preco = data.value("preco", 0.0);
+        string categoria = data.value("categoria", "");
 
-    // Atributos específicos por tipo
-    json atributosEspecificos;
-    if (tipo == "livro") {
-        atributosEspecificos["autor"] = data.value("autor", "");
-        atributosEspecificos["isbn"] = data.value("isbn", "");
-    } else if (tipo == "filme") {
-        atributosEspecificos["diretor"] = data.value("diretor", "");
-        atributosEspecificos["duracao"] = data.value("duracao", 0);
-    } else if (tipo == "jogo_tabuleiro") {
-        atributosEspecificos["numero_jogadores"] = data.value("numero_jogadores", 0);
-        atributosEspecificos["idade_minima"] = data.value("idade_minima", 0);
-    } else if (tipo == "jogo_videogame") {
-        atributosEspecificos["plataforma"] = data.value("plataforma", "");
-        atributosEspecificos["classificacao"] = data.value("classificacao", "");
-    }
+        // =========================
+        // Criação dinâmica do objeto Produto (modelo comentado)
+        // =========================
+        Product* produto = nullptr;
 
-    // =========================
-    // [PSEUDOCÓDIGO - BANCO]
-    // bool sucesso = banco.cadastrarProduto(usuarioLogado, tipo, nome, descricao, preco, categoria, atributosEspecificos);
-    // json j_resposta = { {"status", sucesso ? "ok" : "erro"} };
-    // =========================
+        /*
+        if (tipo == "livro") {
+            produto = new Book(
+                data.value("name", ""),
+                data.value("description", ""),
+                data.value("author", ""),
+                data.value("genre", ""),
+                data.value("idiom", ""),
+                data.value("rentValue", 0),
+                data.value("recommendedAge", ""),
+                data.value("id", 0)
+            );
+        } else if (tipo == "filme") {
+            produto = new Movie(
+                data.value("name", ""),
+                data.value("description", ""),
+                data.value("director", ""),
+                data.value("mainActors", ""),
+                data.value("genre", ""),
+                data.value("idiom", ""),
+                data.value("rentValue", 0),
+                data.value("recommendedAge", ""),
+                data.value("id", 0)
+            );
+        } else if (tipo == "jogo_tabuleiro") {
+            produto = new JogoTabuleiro(nome, descricao, preco, categoria,
+                                        data.value("numero_jogadores",0),
+                                        data.value("idade_minima",0));
+        } else if (tipo == "jogo_videogame") {
+            produto = new JogoVideogame(nome, descricao, preco, categoria,
+                                        data.value("plataforma",""),
+                                        data.value("classificacao",""));
+        }
+        */
 
-    // Mock de resposta enquanto não tem banco
-    json j_resposta = {
-        {"status", "ok"},
-        {"mensagem", "Produto cadastrado com sucesso (mock)"},
-        {"tipo", tipo},
-        {"nome", nome},
-        {"categoria", categoria},
-        {"atributos", atributosEspecificos}
-    };
+        // =========================
+        // [PSEUDOCÓDIGO - BANCO]
+        // bool sucesso = banco.cadastrarProduto(usuarioLogado, produto);
+        // json j_resposta = { {"status", sucesso ? "ok" : "erro"} };
+        // =========================
 
-    res.set_content(j_resposta.dump(4), "application/json");
-});
+        // Mock de resposta enquanto não tem banco
+        json j_resposta = {
+            {"status", "ok"},
+            {"mensagem", "Produto cadastrado com sucesso (mock)"},
+            {"tipo", tipo},
+            {"nome", nome},
+            {"categoria", categoria}
+        };
+
+        res.set_content(j_resposta.dump(4), "application/json");
+
+        // Libera memória (não faz nada enquanto produto é nullptr)
+        delete produto;
+    });
 
 
     cout << "Servidor rodando em http://localhost:8080\n";
