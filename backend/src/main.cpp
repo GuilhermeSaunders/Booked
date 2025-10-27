@@ -1,8 +1,10 @@
 #include "httplib.h"
 #include <iostream>
 #include "motor.h"
+#include "json.hpp"
 
 using namespace std;
+using nlohmann::json;
 
 int main() {
     httplib::Server svr;
@@ -34,6 +36,73 @@ int main() {
     });
 
     //INCLUIR NOSSAS ROTAS AQUI!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    
+    // Filtrar Produto
+    svr.Get("/api/produto/filtro", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string categoria;
+        if (req.has_param("categoria")) {
+            categoria = req.get_param_value("categoria");
+        }
+        // =========================
+        // [PSEUDOCÓDIGO - BANCO]
+        // Aqui você consulta o banco:
+        // auto resultados = banco.filtrarProdutosPorCategoria(categoria);
+        // json j_resposta = resultados;
+        // =========================
+        json j_resposta;
+        // Por enquanto, enquanto não tem banco:
+        // você pode enviar um array vazio ou algum placeholder indicando "nenhum produto"
+        j_resposta = json::array();
+        res.set_content(j_resposta.dump(4), "application/json");
+    });
+
+    //Cadastrar Produto
+    svr.Post("/api/produto/novo", [&](const httplib::Request& req, httplib::Response& res) {
+    json data = json::parse(req.body);
+
+    //Atributos Gerais
+    string tipo = data.value("tipo", "");
+    string nome = data.value("nome", "");
+    string descricao = data.value("descricao", "");
+    double preco = data.value("preco", 0.0);
+    string categoria = data.value("categoria", "");
+
+    // Atributos específicos por tipo
+    json atributosEspecificos;
+    if (tipo == "livro") {
+        atributosEspecificos["autor"] = data.value("autor", "");
+        atributosEspecificos["isbn"] = data.value("isbn", "");
+    } else if (tipo == "filme") {
+        atributosEspecificos["diretor"] = data.value("diretor", "");
+        atributosEspecificos["duracao"] = data.value("duracao", 0);
+    } else if (tipo == "jogo_tabuleiro") {
+        atributosEspecificos["numero_jogadores"] = data.value("numero_jogadores", 0);
+        atributosEspecificos["idade_minima"] = data.value("idade_minima", 0);
+    } else if (tipo == "jogo_videogame") {
+        atributosEspecificos["plataforma"] = data.value("plataforma", "");
+        atributosEspecificos["classificacao"] = data.value("classificacao", "");
+    }
+
+    // =========================
+    // [PSEUDOCÓDIGO - BANCO]
+    // bool sucesso = banco.cadastrarProduto(usuarioLogado, tipo, nome, descricao, preco, categoria, atributosEspecificos);
+    // json j_resposta = { {"status", sucesso ? "ok" : "erro"} };
+    // =========================
+
+    // Mock de resposta enquanto não tem banco
+    json j_resposta = {
+        {"status", "ok"},
+        {"mensagem", "Produto cadastrado com sucesso (mock)"},
+        {"tipo", tipo},
+        {"nome", nome},
+        {"categoria", categoria},
+        {"atributos", atributosEspecificos}
+    };
+
+    res.set_content(j_resposta.dump(4), "application/json");
+});
+
 
     cout << "Servidor rodando em http://localhost:8080\n";
     svr.listen("0.0.0.0", 8080);
