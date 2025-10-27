@@ -5,6 +5,7 @@
 #include "../Product/Book.h"
 #include "../Product/Movie.h"
 #include "json.hpp"
+#include <memory>
 
 using namespace std;
 using nlohmann::json;
