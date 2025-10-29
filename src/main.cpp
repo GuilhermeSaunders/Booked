@@ -1,1 +1,1 @@
-//main no terminal
+//main no terminal e essas merdas
