@@ -20,6 +20,9 @@
 #include "Product/video_game.h"
 
 using namespace std;
+//OBS DE SPIDER: ACHO LEGAL PEGAR ESSAS FUNÇÕES 
+//E IMPLEMENTAÇÕES DE CADA PÁGINA EM ARQUIVOS SEPARADOS DE
+//.CPP E .H, PRA DEIXAR O MAIN MAIS LIMPO E ORGANIZADO
 
 //LOGIN OR SIGN UP
 void accountPage();
@@ -225,6 +228,6 @@ void rentProductPage();
     // cout << "==========================" << endl;
 
 int main() {
-
+    //IMPLEMENTAÇÃO DAS FUNÇÕES AQUI!!!!!!!!!!!!!!!!
     return 0;
 }
