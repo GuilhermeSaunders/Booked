@@ -13,9 +13,9 @@
 #include "BusinessRules/validate.h"
 #include "BusinessRules/rental.h"
 
-#include "Product/Product.h"
-#include "Product/Book.h"
-#include "Product/Movie.h"
+#include "Product/product.h"
+#include "Product/book.h"
+#include "Product/movie.h"
 #include "Product/board_game.h"
 #include "Product/video_game.h"
 
@@ -229,5 +229,13 @@ void rentProductPage();
 
 int main() {
     //IMPLEMENTAÇÃO DAS FUNÇÕES AQUI!!!!!!!!!!!!!!!!
+    User daniel(
+    "daniel@example.com",
+    "123.456.789-00",
+    "Daniel Acioly",
+    "01/01/2000");
+
+    cout << "User Created:" << endl;
+    cout << "Fullname: " << daniel.getFullname() << endl;
     return 0;
 }
