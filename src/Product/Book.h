@@ -2,8 +2,7 @@
 #define BOOK_H
 
 #include <string>
-
-#include "product.h"
+#include "Product.h"
 
 class Book : public Product
 {
@@ -12,16 +11,14 @@ private:
     int numPages;
     std::string author;
 
-
-
 public:
 
     Book(float rentValue,
-         std::string id,
          std::string owner,
          std::string name,
          std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented, int numPages, std::string author);
+         std::string recommendedAge,  std::string genre, 
+         int numPages, std::string author);
 
 
     ~Book() override = default;
@@ -33,6 +30,6 @@ public:
     void setNumPages(int numPages);
     int getNumPages() const;
 
-};
+    std::string getType() const override {return "BOOK";};
 
 #endif

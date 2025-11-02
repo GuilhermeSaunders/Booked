@@ -1,19 +1,25 @@
 #include "board_game.h"
 
-        Board_Game :: Board_Game(float rentValue,
-                std::string id,
-                std::string owner,
-                std::string name,
-                std::string description,  std::string idiom,
-                std::string recommendedAge,  std::string genre, bool isRented, std::string style, int num_players, int duration)
+Board_Game :: Board_Game(float rentValue,
+                        std::string owner,
+                        std::string name,
+                        std::string description,  
+                        std::string idiom,
+                        std::string recommendedAge,  
+                        std::string genre, 
+                        std::string style, 
+                        int num_players, 
+                        int duration)
 
-        : Product( rentValue, std::move(id),
+: Product(rentValue, 
         std::move(owner),
         std::move(name),
-        std::move(description), std::move(idiom),
-        std::move(recommendedAge), std::move(genre),  isRented),
+        std::move(description), 
+        std::move(idiom),
+        std::move(recommendedAge), 
+        std::move(genre)),
         style(std::move(style)),
-        num_players(std::move(num_players)),
+        num_players(num_players),
         duration(duration){}
 
         Board_Game::~Board_Game() = default;

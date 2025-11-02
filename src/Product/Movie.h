@@ -1,7 +1,7 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 
-#include "product.h"
+#include "Product.h"
 #include <string>
 
 class Movie : public Product{
@@ -12,11 +12,15 @@ class Movie : public Product{
 
     public:
          Movie(float rentValue,
-         std::string id,
-         std::string owner,
-         std::string name,
-         std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented, std::string director, std::string mainActors, int duration);
+                std::string owner,
+                std::string name,
+                std::string description,  
+                std::string idiom,
+                std::string recommendedAge,  
+                std::string genre, 
+                std::string director, 
+                std::string mainActors, 
+                int duration);
 
         ~Movie() override = default;
 
@@ -28,6 +32,9 @@ class Movie : public Product{
 
         void setDuration(int duration);
         int getDuration() const;
+
+        std::string getType() const override {
+            return "MOVIE";}
 };
 
 #endif

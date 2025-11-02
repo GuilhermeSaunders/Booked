@@ -1,7 +1,7 @@
 #ifndef VIDEO_GAME_H
 #define VIDEO_GAME_H
 
-#include "product.h"
+#include "Product.h"
 #include <string>
 
 class Video_Game : public Product{
@@ -12,11 +12,16 @@ class Video_Game : public Product{
 
     public:
          Video_Game(float rentValue,
-         std::string id,
-         std::string owner,
-         std::string name,
-         std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented, std::string style, std::string plataform, int duration);
+                    std::string owner,
+                    std::string name,
+                    std::string description,  
+                    std::string idiom,
+                    std::string recommendedAge, 
+                    std::string genre, 
+                    std::string style, 
+                    std::string plataform, 
+                    int duration,
+                    int num_players);
 
         ~Video_Game() override = default;
 
@@ -31,6 +36,9 @@ class Video_Game : public Product{
 
         void setDuration(int duration);
         int getDuration() const;
+
+        std::string getType() const override { 
+            return "VIDEOGAME"; }
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "user.h"
+#include <utility> // Para std::move
 using namespace std;
 
 User::User(const string& i_email,
@@ -7,7 +8,8 @@ User::User(const string& i_email,
     : cpf(i_cpf),
       fullname(i_fullname),
       email(i_email),
-      birthday(i_birthday) {}
+      birthday(i_birthday),
+      id(-1){}
 
 string User::getCpf() const { 
     return cpf; 
@@ -20,6 +22,12 @@ string User::getEmail() const {
 }
 string User::getBirthday() const { 
     return birthday; 
+}
+int User:: getId() const {
+    return this->id;
+}
+int User:: setId() const {
+    this->id = id;
 }
 
 // Update CPF or full name based on the 'update' code (UPDATE)
