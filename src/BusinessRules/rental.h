@@ -8,21 +8,24 @@ class Rental {
 private:
     int transactionId;
     int duration;
-    string lender;
-    string borrower;
+    int lender;
+    int borrower;
     float dailyRate;
     string startDate;
     string status;
-    string productType;
     int productId; 
 
 public:
     // Constructor
-    Rental(int id, int productId, string lender, string borrower, int duration_days, string start_date, float dailyRate);
+    Rental(int productId, string lender, string borrower, int duration_days, string start_date, float dailyRate);
 
     // Methods
     void setStatus(const string& newStatus);
-    int getTransactionId() const;
+    string getStatus() const;
+
+    void settransactionId(int id);
+    int gettransactionId() const;
+    
     int getDuration() const;
     string getStatus() const;
     string getLender() const;

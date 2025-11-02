@@ -1,7 +1,7 @@
 #ifndef BOARD_GAME_H
 #define BOARD_GAME_H
 
-#include "product.h"
+#include "Product.h"
 #include <string>
 
 class Board_Game : public Product{
@@ -12,11 +12,15 @@ class Board_Game : public Product{
 
     public:
          Board_Game(float rentValue,
-         std::string id,
          std::string owner,
          std::string name,
-         std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented, std::string style, int num_players, int duration);
+         std::string description,  
+         std::string idiom,
+         std::string recommendedAge,  
+         std::string genre, 
+         std::string style, 
+         int num_players, 
+         int duration);
 
         ~Board_Game() override = default;
 
@@ -28,6 +32,9 @@ class Board_Game : public Product{
 
         void setDuration(int duration);
         int getDuration() const;
+
+        std::string getType() const override { 
+            return "BOARDGAME";}
 };
 
 #endif

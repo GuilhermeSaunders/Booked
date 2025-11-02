@@ -1,9 +1,15 @@
 #include "rental.h"
+#include <utility> // Para std::move
 
 // Methods
     // Constructor
-    Rental::Rental(int id, int productId, string lenderName, string borrowerName, int duration_days, string start_date, float dailyRateValue)
-    : transactionId(id), productId(productId), lender(lenderName), borrower(borrowerName), duration(duration_days), startDate(start_date), dailyRate(dailyRateValue) {};
+    Rental::Rental(int productId, 
+                    string lender, 
+                    string borrower, 
+                    int duration_days, 
+                    string start_date, 
+                    float dailyRate)
+    : productId(productId), lender(lender), borrower(borrower), duration(duration_days), startDate(start_date), dailyRate(dailyRate);
 
     // Set the rental status (Rented, Available, Out of Stock...)
     void Rental::setStatus(const string& newStatus) {

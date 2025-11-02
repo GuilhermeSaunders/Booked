@@ -7,18 +7,18 @@ class Product {
 
     private:
         float rentValue; //duration => avarege duration of time the product takes to be consumed
-        std::string id ,owner, genre, name, description, idiom, recommendedAge;
+        std:: owner, genre, name, description, idiom, recommendedAge;
+        int id,
         bool isRented;
 
 
     public:
 
         Product(float rentValue,
-         std::string id,
          std::string owner,
          std::string name,
          std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented);
+         std::string recommendedAge,  std::string genre);
 
         virtual ~Product() = default;
 
@@ -43,11 +43,13 @@ class Product {
         void setRecommendedAge(std::string recommendedAge);
         const std::string& getRecommendedAge() const;
 
-        void setId(std::string id);
-        const std::string& getId() const;
+        void setId(int id);
+        int getId() const;
 
         void setIsRented(bool isRented);
         bool getIsRented() const;
+
+        virtual std::string getType() const = 0;
 
 };
 

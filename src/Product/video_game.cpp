@@ -1,20 +1,28 @@
 #include "video_game.h"
+#include <utility> // Para std::move
 
-        Video_Game :: Video_Game(float rentValue,
-                std::string id,
-                std::string owner,
-                std::string name,
-                std::string description,  std::string idiom,
-                std::string recommendedAge,  std::string genre, bool isRented, std::string style, std::string plataform, int duration)
+Video_Game :: Video_Game(float rentValue,
+                        std::string owner,
+                        std::string name,
+                        std::string description,  
+                        std::string idiom,
+                        std::string recommendedAge,  
+                        std::string genre, 
+                        std::string style, 
+                        std::string plataform, 
+                        int duration,
+                        int num_players)
 
-        : Product( rentValue, std::move(id),
+: Product( rentValue, 
         std::move(owner),
         std::move(name),
-        std::move(description), std::move(idiom),
-        std::move(recommendedAge), std::move(genre),  isRented),
+        std::move(description), 
+        std::move(idiom),
+        std::move(recommendedAge), 
+        std::move(genre)),
         style(std::move(style)),
         plataform(std::move(plataform)),
-        num_players(std::move(num_players)),
+        num_players(num_players),
         duration(duration){}
 
         Video_Game::~Video_Game() = default;

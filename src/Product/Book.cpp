@@ -1,19 +1,21 @@
-#include "book.h"
+#include "Book.h"
+#include <utility> // Para std::move
 
     Book :: Book(float rentValue,
-         std::string id,
          std::string owner,
          std::string name,
          std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented, int numPages, std::string author)
+         std::string recommendedAge,  std::string genre, int numPages, std::string author)
 
-    :   Product( rentValue, std::move(id),
-        std::move(owner),
-        std::move(name),
-        std::move(description), std::move(idiom),
-        std::move(recommendedAge), std::move(genre),  isRented),
-        numPages(numPages),
-        author(std::move(author)){}
+    :   Product(rentValue,
+                std::move(owner),
+                std::move(name),
+                std::move(description), 
+                std::move(idiom),
+                std::move(recommendedAge), 
+                std::move(genre)),
+                numPages(numPages),
+                author(std::move(author)){}
 
 
     Book :: ~Book() = default;

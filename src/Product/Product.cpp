@@ -1,26 +1,23 @@
-#include "product.h"
+#include "Product.h"
 
 Product::Product(float rentValue,
-         std::string id,
-         std::string owner,
-         std::string name,
-         std::string description,  std::string idiom,
-         std::string recommendedAge,  std::string genre, bool isRented)
+                std::string owner,
+                std::string name,
+                std::string description,  std::string idiom,
+                std::string recommendedAge,  std::string genre)
 
     :   rentValue(rentValue),
-        id(std::move(id)),
         owner(std::move(owner)),
         name(std::move(name)),
         description(std::move(description)),
         idiom(std::move(idiom)),
         recommendedAge(std::move(recommendedAge)),
         genre(std::move(genre)),
-        isRented(isRented){}
+        id(-1),
+        isRented(false){}
 
-
-
-Product::~Product() = default;
-
+void Product::setId(int id) {this->id = id;}
+int Product:: getId() const {return this-> id;}
 
 void Product::setRentValue(float rentvalue){this->rentValue = rentvalue;}
 float Product::getRentValue() const {return rentValue;}
@@ -28,8 +25,6 @@ float Product::getRentValue() const {return rentValue;}
 
 void Product::setOwner(std::string owner){this-> owner = std::move(owner);}
 const std::string& Product::getOwner() const {return owner;}
-
-
 
 void Product::setGenre(std::string genre){this->genre = std::move(genre);}
 const std::string& Product::getGenre() const {return genre;}
@@ -45,10 +40,6 @@ const std::string& Product::getIdiom() const {return idiom;}
 
 void Product::setRecommendedAge(std::string recommendedAge){this->recommendedAge = std::move(recommendedAge);}
 const std::string& Product::getRecommendedAge() const {return recommendedAge;}
-
-void Product::setId(std::string id){this->id = std::move(id);}
-const std::string& Product::getId() const {return id;}
-
 
 void Product::setIsRented(bool isRented){this->isRented = isRented;}
 bool Product::getIsRented() const {return isRented;}
