@@ -3,6 +3,7 @@
 #include <sqlite3.h>
 #include <string>
 #include <vector> // Para futuras funções de "get"
+#include <utility> // Para std::pair 
 
 // Modelos de Dados
 #include "Product.h"
@@ -48,5 +49,7 @@ public:
 
     // --- Funções de Rental ---
     bool registerRental(Rental* rental);
+    bool returnRental(int rentalId);
+    std::pair<std::string, float> getItemStatusAndPrice(int itemId);
     bool updateItemStatus(int itrmId, const std::string& newStatus);
 }; 

@@ -51,6 +51,7 @@ private:
     void handleRentedProducts();
     void handleLogout();
     void handleRentItem();
+    void handleReturnItem();
 
 public:
     // Construtor: recebe o banco de dados

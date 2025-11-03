@@ -70,8 +70,8 @@ void App::showAuthMenu() {
     clearScreen();
     string opcao;
     while (true) { 
-        cout << "\n===== Sistema de Aluguel =====" << endl;
-        cout << "1. Cadastrar" << endl;
+        cout << "\n===== Bem-vindo ao Booked! =====" << endl;
+        cout << "1. Cadastrar conta" << endl;
         cout << "2. Login" << endl;
         cout << "3. Sair" << endl;
         cout << "Escolha uma opcao: ";
@@ -380,21 +380,36 @@ void App::handleRentItem() {
     cout << "\n--- Alugar um Item ---" << endl;
 
     int itemId = getInt("Digite o ID do item que deseja alugar: ");
+
+    std::pair<std::string, float> itemInfo = db.getItemStatusAndPrice(itemId);
+    std::string status = itemInfo.first;
+    float dailyRate = itemInfo.second;
+
+    if (status == "Alugado") {
+        cout << "ERRO: Este item já está alugado. Não pode ser alugado novamente." << endl;
+        return;
+    }
+    if (status == "NaoEncontrado" || status == "ERRO") {
+        cout << "ERRO: Item com ID " << itemId << " não encontrado." << endl;
+        return;
+    }
+
+    cout << "Item: (ID " << itemId << ") - Diária: R$ " << dailyRate << endl;
     int duration = getInt("Por quantos dias você deseja alugar? ");
     std::string startDate = getStringLine("Data de início (YYYY-MM-DD): ");
 
     int borrowerId = currentUser->getUser().getId();
-    float dailyRate = 5.50; 
 
     Rental newRental(itemId, borrowerId, duration, startDate, dailyRate);
     newRental.setStatus("Ativo");
+
     if (db.registerRental(&newRental)) {
-        // Se deu certo, atualizamos o status do item
+
         if (db.updateItemStatus(itemId, "Alugado")) {
             cout << "Item alugado com sucesso!" << endl;
             cout << "ID da Transação: " << newRental.getTransactionId() << endl;
         } else {
-            cout << "Erro: O aluguel foi registrado, mas não foi possível atualizar o status do item." << endl;
+            cout << "ERRO FATAL: O aluguel foi registrado, mas não foi possível atualizar o status do item." << endl;
 
         }
     } else {
@@ -420,12 +435,50 @@ void App::handleMyProducts() {
 }
 void App::handleRentedProducts() {
     clearScreen();
-    // 1. Obter o ID do usuário que está logado na sessão
-    int customerId = currentUser->getUser().getId();
+    cout << "\n--- Meus Aluguéis (Ativos e Passados) ---" << endl;
 
-    // 2. Chamar a nova função do repositório
+    int customerId = currentUser->getUser().getId();
     db.listRentalsByCustomer(customerId);
+
+    while(true) {
+        cout << "\n--- Opções de Aluguel ---" << endl;
+        cout << "1. Devolver um item (pelo ID do Aluguel)" << endl;
+        cout << "0. Voltar ao Menu Principal" << endl;
+        cout << "Escolha uma opcao: ";
+        
+        std::string opcao;
+        cin >> opcao;
+        clearInputBuffer();
+
+        if (opcao == "1") {
+            handleReturnItem();
+
+            clearScreen();
+            cout << "\n--- Lista de Aluguéis Atualizada ---" << endl;
+            db.listRentalsByCustomer(customerId);
+        } else if (opcao == "0") {
+            break; 
+        } else {
+            cout << "Opção inválida." << endl;
+        }
+    }
+}
+
+void App::handleReturnItem() {
+    clearScreen();
+    cout << "\n--- Devolver um Item ---" << endl;
     
+    int rentalId = getInt("Digite o ID do Aluguel (o 'ID_do_Aluguel' da lista) que deseja devolver: ");
+
+    if (db.returnRental(rentalId)) {
+        cout << "Item devolvido com sucesso!" << endl;
+    } else {
+        cout << "Erro: Não foi possível processar a devolução." << endl;
+    }
+    
+    // Pausa para o usuário ler a mensagem
+    cout << "Pressione Enter para continuar...";
+    getStringLine(""); // Apenas espera o usuário apertar Enter
 }
 
 // --- Rota: Logout ---

@@ -287,7 +287,8 @@ bool Repositorio::registerBoardGame(Board_Game* boardgame) {
 void Repositorio::listAllProducts() {
     if (!db) return;
     
-    const char* sql = "SELECT I.NAME, I.TYPE, I.GENRE, I.DESCRIPTION, I.RENT_VALUE, I.STATUS, I.ID, "
+    const char* sql = "SELECT I.NAME AS 'Nome', I.TYPE AS 'Tipo', I.GENRE AS 'Gênero', I.DESCRIPTION AS 'Descrição', "
+                      "I.RENT_VALUE AS 'Valor diário de aluguel', I.STATUS AS 'Status', I.ID AS 'Id do Produto', "
                       "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
                       "FROM ITEM I "
                       "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF;";
@@ -306,7 +307,8 @@ void Repositorio::listAllProducts() {
 void Repositorio::listProductsByType(const std::string& type) {
     if (!db) return;
 
-    std::string sql = "SELECT I.NAME, I.TYPE, I.DESCRIPTION, I.GENRE, I.RENT_VALUE, I.STATUS, I.ID, "
+    std::string sql = "SELECT I.NAME AS 'Nome', I.TYPE AS 'Tipo', I.GENRE AS 'Gênero', I.DESCRIPTION AS 'Descrição', "
+                      "I.RENT_VALUE AS 'Valor diário de aluguel', I.STATUS AS 'Status', I.ID AS 'Id do Produto', "
                       "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
                       "FROM ITEM I "
                       "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF "
@@ -357,7 +359,7 @@ bool Repositorio::updateItemStatus(int itemId, const std::string& newStatus) {
 }
 void Repositorio::listProductsByOwner(const std::string& ownerCpf) {
     if (!db) return;
-    std::string sql = "SELECT NAME, TYPE, RENT_VALUE, STATUS, ID "
+    std::string sql = "SELECT NAME AS 'Nome', TYPE AS 'Tipo', RENT_VALUE AS 'Valor diário de aluguel', STATUS AS 'Status', ID AS 'Id do produto'"
                       "FROM ITEM "
                       "WHERE OWNER_CPF = '" + ownerCpf + "';";
     
@@ -399,4 +401,77 @@ void Repositorio::listRentalsByCustomer(int customerId) {
         sqlite3_free(errMsg);
     }
     std::cout << "------------------------------------" << std::endl;
+}
+std::pair<std::string, float> Repositorio::getItemStatusAndPrice(int itemId) {
+    if (!db) return {"ERRO", 0.0f};
+
+    sqlite3_stmt* stmt;
+    std::string status = "NaoEncontrado";
+    float price = 0.0f;
+
+    const char* sql = "SELECT STATUS, RENT_VALUE FROM ITEM WHERE ID = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+        std::cerr << "Erro ao preparar statement: " << sqlite3_errmsg(db) << std::endl;
+        return {"ERRO", 0.0f};
+    }
+
+    sqlite3_bind_int(stmt, 1, itemId);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        // Se encontramos o item, pegamos os dados
+        status = (const char*)sqlite3_column_text(stmt, 0);
+        price = (float)sqlite3_column_double(stmt, 1);
+    }
+
+    sqlite3_finalize(stmt);
+    return {status, price};
+}
+
+int getItemIdFromRental(sqlite3* db, int rentalId) {
+    sqlite3_stmt* stmt;
+    int itemId = -1;
+    const char* sql = "SELECT ITEM_ID FROM RENTALS WHERE ID = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+        return -1;
+    }
+    sqlite3_bind_int(stmt, 1, rentalId);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        itemId = sqlite3_column_int(stmt, 0);
+    }
+    
+    sqlite3_finalize(stmt);
+    return itemId; 
+}
+
+bool Repositorio::returnRental(int rentalId) {
+    if (!db) return false;
+
+    if (!executeSQL("BEGIN TRANSACTION;")) return false;
+
+    int itemId = getItemIdFromRental(db, rentalId);
+    
+    if (itemId == -1) {
+        cout << "Erro: ID de Aluguel não encontrado." << endl;
+        executeSQL("ROLLBACK;");
+        return false;
+    }
+
+    std::string sqlUpdateRental = "UPDATE RENTALS SET STATUS = 'Devolvido' WHERE ID = " + std::to_string(rentalId) + ";";
+    if (!executeSQL(sqlUpdateRental)) {
+        std::cerr << "Erro ao atualizar o status do aluguel." << std::endl;
+        executeSQL("ROLLBACK;");
+        return false;
+    }
+
+    std::string sqlUpdateItem = "UPDATE ITEM SET STATUS = 'Disponivel' WHERE ID = " + std::to_string(itemId) + ";";
+    if (!executeSQL(sqlUpdateItem)) {
+        std::cerr << "Erro ao atualizar o status do item." << std::endl;
+        executeSQL("ROLLBACK;");
+        return false;
+    }
+
+    return executeSQL("COMMIT;");
 }
