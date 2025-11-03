@@ -191,7 +191,11 @@
       <code>git clone</code><br>
       2. Acesse o diretório do projeto:<br>
       <code>cd Booked</code><br>
-      3. Execute o programa:<br>
+      3. Compile o Código:<br>
+      <code>g++ -std=c++17 -I./src -I./src/BusinessRules -I./src/Customer -I./src/Product \
+src/*.cpp src/BusinessRules/*.cpp src/Customer/*.cpp src/Product/*.cpp -o booked_system -lsqlite3
+</code><br>
+      4. Execute o programa:<br>
       <code>./booked_system</code>
       <br><br>
       Certifique-se de ter o compilador g++ instalado no seu sistema!

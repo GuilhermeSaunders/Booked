@@ -26,11 +26,14 @@ git clone https://github.com/GuilhermeSaunders/Booked
 cd Booked
 ```
 
-### 3️⃣ Execute o Programa
+### 3️⃣ Compile o código
+```bash
+g++ -std=c++17 -I./src -I./src/BusinessRules -I./src/Customer -I./src/Product \src/*.cpp src/BusinessRules/*.cpp src/Customer/*.cpp src/Product/*.cpp -o booked_system -lsqlite3
+```
+### 4️⃣ Execute o programa
 ```bash
 ./booked_system
 ```
-
 ### 🧩 Conceitos Utilizados
 * **POO (Programação Orientada a Objetos)**: encapsulamento, herança, polimorfismo.
 * **CRUD**: gerenciamento de dados (Create, Read, Update, Delete).
