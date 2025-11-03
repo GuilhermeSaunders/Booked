@@ -19,7 +19,7 @@
         // Seus arquivos .cpp
         "main.cpp",
         "App.cpp",
-        "Repositorio.cpp",
+        "repositorie.cpp",
         "BusinessRules/login.cpp",
         "BusinessRules/rental.cpp",
         "BusinessRules/validate.cpp",
