@@ -4,7 +4,7 @@
 #include <string>
 #include "login.h"
 #include "account.h"
-#include "repositorie.h"        // Inclui o Repositório
+#include "repository.h"        // Inclui o Repositório
 #include "validate.h" // Inclui o Validador
 
 // Inclui todos os modelos de produto para o cadastro

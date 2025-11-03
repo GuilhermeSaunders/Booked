@@ -1,4 +1,4 @@
-#include "repositorie.h"    
+#include "repository.h"    
 #include "DBSchema.h"       
 #include <iostream>         
 #include <string>   

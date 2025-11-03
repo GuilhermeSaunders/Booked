@@ -1,4 +1,39 @@
-# O Booked 
-## é uma plataforma colaborativa criada para que pessoas possam alugar entre si livros, videogames, jogos de tabuleiro e filmes, resgatando o prazer de explorar histórias e mundos físicos sem precisar comprar tudo. Nosso objetivo é tornar o acesso à cultura mais fácil, econômico e sustentável, conectando pessoas com interesses em comum e fortalecendo o sentimento de comunidade. No Booked, qualquer pessoa pode disponibilizar itens da sua coleção e ganhar dinheiro com isso, enquanto outras podem descobrir novos títulos pagando muito menos do que pagariam para comprar. 
+# 📚 **Booked**
 
-## 🔔 Importante: O Booked é apenas um facilitador. As transações financeiras são realizadas diretamente entre as partes do processo.
+**Booked** é uma plataforma colaborativa que permite que pessoas **compartilhem e aluguem livros, videogames, jogos de tabuleiro e filmes entre si**, resgatando o prazer de explorar histórias e mundos reais sem precisar comprar tudo.
+
+Nosso objetivo é tornar o acesso à cultura:
+
+✅ **Mais fácil**  
+✅ **Mais econômico**  
+✅ **Mais sustentável**
+
+Conectamos pessoas com interesses em comum e fortalecemos o senso de comunidade.  
+No Booked, qualquer pessoa pode disponibilizar itens da própria coleção e ganhar dinheiro com isso — enquanto outros descobrem novas obras pagando muito menos do que pagariam para comprar.
+
+> 🎯 *Mais acesso, mais cultura, mais conexão entre pessoas.*
+
+---
+
+## ⚙️ **Como executar o projeto**
+
+### 1️⃣ Clone o repositório
+```bash
+git clone https://github.com/GuilhermeSaunders/Booked
+```
+### 2️⃣ Acesse o diretório
+```bash
+cd Booked
+```
+
+### 3️⃣ Execute o Programa
+```bash
+./booked_system
+```
+
+### 🧩 Conceitos Utilizados
+* **POO (Programação Orientada a Objetos)**: encapsulamento, herança, polimorfismo.
+* **CRUD**: gerenciamento de dados (Create, Read, Update, Delete).
+* **Arquitetura modular**: separação entre entidades (usuários e produtos), regras de negócio (login, validação, aluguel) e persistência (repositório e banco de dados).
+* **Composição e injeção de dependência**: App controla o fluxo e recebe Repositorio como dependência.
+* **Validação e segurança**: Login e Validate garantem integridade dos dados e autenticação segura.

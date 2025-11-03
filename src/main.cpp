@@ -13,7 +13,7 @@
 #include "video_game.h"
 
 #include "app.h" 
-#include "repositorie.h" 
+#include "repository.h" 
 
 int main() {
     
