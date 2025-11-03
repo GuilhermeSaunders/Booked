@@ -67,6 +67,7 @@ float App::getFloat(const string& prompt) {
 // --- Rota: Autenticação ---
 
 void App::showAuthMenu() {
+    clearScreen();
     string opcao;
     while (true) { 
         cout << "\n===== Sistema de Aluguel =====" << endl;
@@ -96,6 +97,7 @@ void App::showAuthMenu() {
 // --- Rota: Cadastro ---
 
 void App::handleRegister() {
+    clearScreen();
     cout << "\n===== Cadastro de Novo Usuário =====" << endl;
     
     string email, cpf, fullname, birthday, username, password;
@@ -148,6 +150,7 @@ void App::handleRegister() {
 // --- Rota: Login ---
 
 void App::handleLogin() {
+    clearScreen();
     cout << "\n===== Login =====" << endl;
     string username = getStringLine("Usuário: ");
     string password = getStringLine("Senha: ");
@@ -170,6 +173,7 @@ void App::handleLogin() {
 // --- Rota: Menu Principal (Pós-Login) ---
 
 void App::showMainMenu() {
+    clearScreen();
     string opcao;
     while (true) {
         cout << "\n===== Menu Principal =====" << endl;
@@ -206,6 +210,7 @@ void App::showMainMenu() {
 }
 
 void App::handleAddProduct() {
+    clearScreen();
     string opcao;
     cout << "\n===== Adicionar Novo Produto =====" << endl;
     cout << "Que tipo de produto deseja adicionar?" << endl;
@@ -235,6 +240,7 @@ void App::handleAddProduct() {
 
 // --- Rota: Catálogo (IMPLEMENTADA) ---
 void App::handleCatalog() {
+    clearScreen();
     string opcao;
     
     while(true) {
@@ -366,6 +372,7 @@ void App::handleAddBoardGame() {
 }
 
 void App::handleRentItem() {
+    clearScreen();
     cout << "\n--- Alugar um Item ---" << endl;
 
     int itemId = getInt("Digite o ID do item que deseja alugar: ");
