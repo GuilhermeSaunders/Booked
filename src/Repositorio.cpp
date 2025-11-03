@@ -335,3 +335,12 @@ bool Repositorio::registerRental(Rental* rental) {
     }
     return false;
 }
+bool Repositorio::updateItemStatus(int itemId, const std::string& newStatus) {
+    if (!db) return false;
+
+    std::stringstream ss;
+    ss << "UPDATE ITEM SET STATUS = '" << newStatus 
+       << "' WHERE ID = " << itemId << ";";
+    
+    return executeSQL(ss.str());
+}

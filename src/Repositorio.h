@@ -46,4 +46,5 @@ public:
 
     // --- Funções de Rental ---
     bool registerRental(Rental* rental);
+    bool updateItemStatus(int itrmId, const std::string& newStatus);
 }; 

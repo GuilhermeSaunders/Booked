@@ -122,7 +122,7 @@ void App::handleRegister() {
         cout << "Erro: Não foi possível cadastrar o usuário (CPF ou Email podem já existir)." << endl;
         return;
     }
-    cout << "Usuário criado com ID: " << newUser.getId() << endl;
+    
 
     while (true) {
         username = getStringLine("Nome de usuário (para login): ");
@@ -204,59 +204,70 @@ void App::showMainMenu() {
     showAuthMenu(); // Volta para o menu de login após o logout
 }
 
-// --- Rota: Catálogo (IMPLEMENTADA) ---
-void App::handleCatalog() {
+void App::handleAddProduct() {
     string opcao;
-    cout << "\n===== Catálogo de Produtos =====" << endl;
-    cout << "1. Ver Todos os Produtos" << endl;
-    cout << "2. Ver Livros (BOOK)" << endl;
-    cout << "3. Ver Filmes (MOVIE)" << endl;
-    cout << "4. Ver Videogames (VIDEOGAME)" << endl;
-    cout << "5. Ver Jogos de Tabuleiro (BOARDGAME)" << endl;
+    cout << "\n===== Adicionar Novo Produto =====" << endl;
+    cout << "Que tipo de produto deseja adicionar?" << endl;
+    cout << "1. Livro" << endl;
+    cout << "2. Filme" << endl;
+    cout << "3. Jogo de Tabuleiro" << endl;
+    cout << "4. Videogame" << endl;
     cout << "0. Voltar" << endl;
     cout << "Escolha uma opcao: ";
     cin >> opcao;
     clearInputBuffer();
 
     if (opcao == "1") {
-        db.listAllProducts();
+        handleAddBook();
     } else if (opcao == "2") {
-        db.listProductsByType("BOOK");
+        handleAddMovie();
     } else if (opcao == "3") {
-        db.listProductsByType("MOVIE");
+        handleAddBoardGame();
     } else if (opcao == "4") {
-        db.listProductsByType("VIDEOGAME");
-    } else if (opcao == "5") {
-        db.listProductsByType("BOARDGAME");
+        handleAddVideoGame();
     } else if (opcao == "0") {
         return;
     } else {
         cout << "Opção inválida." << endl;
     }
-    // Aqui você pode adicionar a lógica para alugar um item por ID
 }
 
-
-// --- Rota: Adicionar Produto (IMPLEMENTADA) ---
-
-void App::handleAddProduct() {
+// --- Rota: Catálogo (IMPLEMENTADA) ---
+void App::handleCatalog() {
     string opcao;
-    cout << "\n===== Adicionar Novo Produto =====" << endl;
-    cout << "1. Adicionar Livro" << endl;
-    cout << "2. Adicionar Filme" << endl;
-    cout << "3. Adicionar Jogo de Tabuleiro" << endl;
-    cout << "4. Adicionar Videogame" << endl;
-    cout << "0. Voltar" << endl;
-    cout << "Escolha uma opcao: ";
-    cin >> opcao;
-    clearInputBuffer();
+    
+    while(true) {
+        cout << "\n===== Catálogo de Produtos =====" << endl;
+        cout << "1. Ver Todos os Produtos" << endl;
+        cout << "2. Ver Livros (BOOK)" << endl;
+        cout << "3. Ver Filmes (MOVIE)" << endl;
+        cout << "4. Ver Videogames (VIDEOGAME)" << endl;
+        cout << "5. Ver Jogos de Tabuleiro (BOARDGAME)" << endl;
+        cout << "--------------------------------" << endl;
+        cout << "6. Alugar um item (por ID)" << endl; // <-- NOVO
+        cout << "0. Voltar ao Menu Principal" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+        clearInputBuffer();
 
-    if (opcao == "1") handleAddBook();
-    else if (opcao == "2") handleAddMovie();
-    else if (opcao == "3") handleAddBoardGame();
-    else if (opcao == "4") handleAddVideoGame();
-    else if (opcao == "0") return;
-    else cout << "Opção inválida." << endl;
+        if (opcao == "1") {
+            db.listAllProducts();
+        } else if (opcao == "2") {
+            db.listProductsByType("BOOK");
+        } else if (opcao == "3") {
+            db.listProductsByType("MOVIE");
+        } else if (opcao == "4") {
+            db.listProductsByType("VIDEOGAME");
+        } else if (opcao == "5") {
+            db.listProductsByType("BOARDGAME");
+        } else if (opcao == "6") {
+            handleRentItem(); // <-- NOVO
+        } else if (opcao == "0") {
+            break; // Sai do loop do catálogo
+        } else {
+            cout << "Opção inválida." << endl;
+        }
+    }
 }
 
 // Coleta dados comuns a todos os produtos
@@ -350,6 +361,32 @@ void App::handleAddBoardGame() {
         cout << "Jogo de Tabuleiro cadastrado com sucesso com o ID: " << boardgame.getId() << endl;
     } else {
         cout << "Erro ao cadastrar o Jogo de Tabuleiro." << endl;
+    }
+}
+
+void App::handleRentItem() {
+    cout << "\n--- Alugar um Item ---" << endl;
+
+    int itemId = getInt("Digite o ID do item que deseja alugar: ");
+    int duration = getInt("Por quantos dias você deseja alugar? ");
+    std::string startDate = getStringLine("Data de início (YYYY-MM-DD): ");
+
+    int borrowerId = currentUser->getUser().getId();
+    float dailyRate = 5.50; 
+
+    Rental newRental(itemId, borrowerId, duration, startDate, dailyRate);
+    newRental.setStatus("Ativo");
+    if (db.registerRental(&newRental)) {
+        // Se deu certo, atualizamos o status do item
+        if (db.updateItemStatus(itemId, "Alugado")) {
+            cout << "Item alugado com sucesso!" << endl;
+            cout << "ID da Transação: " << newRental.getTransactionId() << endl;
+        } else {
+            cout << "Erro: O aluguel foi registrado, mas não foi possível atualizar o status do item." << endl;
+
+        }
+    } else {
+        cout << "Erro: Não foi possível registrar o aluguel." << endl;
     }
 }
 
