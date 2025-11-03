@@ -18,8 +18,6 @@
                 author(std::move(author)){}
 
 
-    Book :: ~Book() = default;
-
     void Book::setAuthor(std::string author){this->author = std::move(author);}
     const std::string& Book::getAuthor() const {return author;}
 

@@ -23,8 +23,6 @@
         mainActors(std::move(mainActors)),
         duration(duration){}
 
-        Movie::~Movie() = default;
-
         void Movie :: setDirector(std::string director) {this->director = std::move(director);}
         const std::string& Movie :: getDirector() const {return this->director;}
 

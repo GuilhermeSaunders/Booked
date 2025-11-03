@@ -1,41 +1,39 @@
+// Rental.h (O CONTRATO CORRETO)
 #ifndef RENTAL_H
 #define RENTAL_H
 #include <string>
 using namespace std;
 
-
 class Rental {
 private:
-    int transactionId;
+    int id;         // O ID da transação (gerado pelo banco)
     int duration;
-    int lender;
-    int borrower;
+    int customerId; // <-- A MUDANÇA: O ID do cliente (era string borrower)
+    int productId;  // O ID do produto
     float dailyRate;
     string startDate;
     string status;
-    int productId; 
 
 public:
-    // Constructor
-    Rental(int productId, string lender, string borrower, int duration_days, string start_date, float dailyRate);
+    // Construtor (sem 'id')
+    Rental(int productId, int customerId, int duration_days, string start_date, float dailyRate);
 
-    // Methods
+    // Getters/Setters de Status
     void setStatus(const string& newStatus);
     string getStatus() const;
-
-    void settransactionId(int id);
-    int gettransactionId() const;
     
+    // Getters/Setters de ID (para o Repositorio)
+    void setId(int id);
+    int getId() const;
+
+    // --- OS GETTERS CORRETOS ---
     int getDuration() const;
-    string getStatus() const;
-    string getLender() const;
-    string getBorrower() const;
+    int getCustomerId() const; // <-- A MUDANÇA: O método que o Repositorio procura
+    int getProductId() const; 
     string getStartDate() const;
     float getDailyRate() const;
-    string getProductType() const {return productType;}
-    int getproductId() const;
 
-    // Functionalities
+    // Funções de Lógica
     bool isOverdue(const string& currentDate);
     void completeRental();
     string calculateEndDate();

@@ -30,6 +30,8 @@ public:
     void setNumPages(int numPages);
     int getNumPages() const;
 
-    std::string getType() const override {return "BOOK";};
+    std::string getType() const override {return "BOOK";}
+    
+};
 
 #endif

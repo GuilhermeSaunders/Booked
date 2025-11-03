@@ -7,8 +7,8 @@ class Product {
 
     private:
         float rentValue; //duration => avarege duration of time the product takes to be consumed
-        std:: owner, genre, name, description, idiom, recommendedAge;
-        int id,
+        std::string owner, genre, name, description, idiom, recommendedAge;
+        int id;
         bool isRented;
 
 

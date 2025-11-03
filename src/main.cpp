@@ -1,241 +1,153 @@
-//main no terminal e essas merdas
-
-//função do Hub - chama outras funções para cada respectiva página
-//funções das páginas
-
-//uma espécie de "recursão" entre funções
-
+// main.cpp
 #include <iostream>
-#include "Customer/user.h"
-#include "Customer/account.h"
+#include <string>
+#include <limits> // Para limpar o buffer de entrada
 
-#include "BusinessRules/login.h"
-#include "BusinessRules/validate.h"
-#include "BusinessRules/rental.h"
+// --- NOSSOS ARQUIVOS ---
+#include "Repositorio.h"
+#include "Customer\user.h"
+#include "Product\Book.h"
+// (Inclua os outros .h de produto quando for usá-los)
 
-#include "Product/product.h"
-#include "Product/book.h"
-#include "Product/movie.h"
-#include "Product/board_game.h"
-#include "Product/video_game.h"
+// --- Funções Auxiliares do Menu ---
 
-using namespace std;
-//OBS DE SPIDER: ACHO LEGAL PEGAR ESSAS FUNÇÕES 
-//E IMPLEMENTAÇÕES DE CADA PÁGINA EM ARQUIVOS SEPARADOS DE
-//.CPP E .H, PRA DEIXAR O MAIN MAIS LIMPO E ORGANIZADO
+// Limpa o buffer de entrada (previne bugs do std::cin)
+void limparBuffer() {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
-//LOGIN OR SIGN UP
-void accountPage();
-    // cout << "===== Tela de Login =====" << endl;
-    // cout << "1. Login" << endl;
-    // cout << "2. Cadastrar" << endl;
-    // cout << "3. Sair" << endl;
-    // cout << "Escolha uma opcao: ";
-void loginPage();
-    // cout << "===== Login =====" << endl;
-    // cout << "Digite seu nome de usuário: ";
-    // getline(cin, username);
-    // cout << "Digite sua senha: ";
-    // getline(cin, password);
-    // // Lógica de login
-    // cout << "Login realizado com sucesso!" << endl;
-    // cout << "======================" << endl;
-void registerPage();
-    // cout << "===== Cadastro =====" << endl;
-    // cout << "Digite seu email: ";
-    // getline(cin, email);
-    // cout << "Digite seu CPF: ";
-    // getline(cin, cpf);
-    // cout << "Digite seu nome completo: ";
-    // getline(cin, fullname);
-    // cout << "Digite sua data de nascimento (DD/MM/AAAA): ";
-    // getline(cin, birthday);
-    // cout << "Digite seu nome de usuário: ";
-    // getline(cin, username);
-    // cout << "Digite sua senha: ";
-    // getline(cin, password);
-    // // Lógica de cadastro
-    // cout << "Cadastro realizado com sucesso!" << endl;
-    // cout << "======================" << endl;
+void mostrarMenuPrincipal() {
+    std::cout << "\n=====================================" << std::endl;
+    std::cout << "   Sistema de Locadora (Terminal)    " << std::endl;
+    std::cout << "=====================================" << std::endl;
+    std::cout << "1. Gerenciar Clientes" << std::endl;
+    std::cout << "2. Gerenciar Produtos" << std::endl;
+    std::cout << "3. Gerenciar Aluguéis" << std::endl;
+    std::cout << "0. Sair" << std::endl;
+    std::cout << "Escolha uma opção: ";
+}
 
-//MAIN HUB
-void showMainMenu();
-    // cout << "===== Menu Principal =====" << endl;
-    // cout << "1. Catálogo" << endl;
-    // cout << "2. Adicionar Produto" << endl;
-    // cout << "3. Perfil" << endl;
-    // cout << "4. Meus Produtos" << endl;
-    // cout << "5. Produtos Alugados" << endl;
-    // cout << "6. Logout" << endl;";
-    // cout << "Escolha uma opcao: ";
+void mostrarMenuClientes() {
+    std::cout << "\n--- Gerenciar Clientes ---" << std::endl;
+    std::cout << "1. Cadastrar Novo Cliente" << std::endl;
+    std::cout << "2. Listar Todos os Clientes" << std::endl;
+    std::cout << "9. Voltar" << std::endl;
+    std::cout << "Escolha uma opção: ";
+}
 
-//SHOW STUFF PAGES
-void catalogPage();
-    // cout << "===== Catálogo de Produtos =====" << endl;
-    // cout << "1. Ver Todos os Produtos" << endl;
-    // cout << "2. Filtro: Ver Livros" << endl;
-    // cout << "3. Filtro: Ver Video Games" << endl;
-    // cout << "4. Filtro: Ver Board Games" << endl;
-    // cout << "5. Filtro: Ver Filmes" << endl;
-    // cout << "6. Voltar ao Menu Principal" << endl;
-    // cout << "Escolha uma opcao: ";
-void showBooks();
-    // cout << "===== Lista de Livros =====" << endl;
-    // for (const auto& book : books) {
-    //     cout << "ID: " << book.getId() << ", Nome: " << book.getName() << ", Gênero: " << book.getGenre() << endl;
-    // }
-    // cout << "===========================" << endl;
-void showVideoGames();
-    // cout << "===== Lista de Video Games =====" << endl;
-    // for (const auto& videoGame : videoGames) {
-    //     cout << "ID: " << videoGame.getId() << ", Nome: " << videoGame.getName() << ", Gênero: " << videoGame.getGenre() << endl;
-    // }
-    // cout << "===============================" << endl;
-void showBoardGames();
-    // cout << "===== Lista de Board Games =====" << endl;
-    // for (const auto& boardGame : boardGames) {
-    //     cout << "ID: " << boardGame.getId() << ", Nome: " << boardGame.getName() << ", Gênero: " << boardGame.getGenre() << endl;
-    // }
-    // cout << "===============================" << endl;
-void showMovies();
-    // cout << "===== Lista de Filmes =====" << endl;
-    // for (const auto& movie : movies) {
-    //     cout << "ID: " << movie.getId() << ", Nome: " << movie.getName() << ", Gênero: " << movie.getGenre() << endl;
-    // }
-    // cout << "===========================" << endl; 
+void mostrarMenuProdutos() {
+    std::cout << "\n--- Gerenciar Produtos ---" << std::endl;
+    std::cout << "1. Cadastrar Novo Livro (BOOK)" << std::endl;
+    std::cout << "2. Listar Produtos por Categoria" << std::endl;
+    std::cout << "9. Voltar" << std::endl;
+    std::cout << "Escolha uma opção: ";
+}
 
-//ADD STUFF PAGES
-void addProductPage();
-    // cout << "===== Adicionar Novo Produto =====" << endl;
-    // cout << "1. Adicionar Livro" << endl;
-    // cout << "2. Adicionar Video Game" << endl;
-    // cout << "3. Adicionar Board Game" << endl;
-    // cout << "4. Adicionar Filme" << endl;
-    // cout << "5. Voltar ao Menu Principal" << endl;
-    // cout << "Escolha uma opcao: ";
-void addBook();
-    // cout << "===== Adicionar Livro =====" << endl;
-    // cout << "Digite o nome do livro: ";
-    // getline(cin, name);
-    // cout << "Digite a descrição do livro: ";
-    // getline(cin, description);
-    // cout << "Digite o gênero do livro: ";
-    // getline(cin, genre);
-    // cout << "Digite o idioma do livro: ";
-    // getline(cin, idiom);
-    // cout << "Digite a idade recomendada para o livro: ";
-    // getline(cin, recommendedAge);
-    // cout << "Digite o valor de aluguel do livro: ";
-    // cin >> rentValue;
-    // cin.ignore(); // Limpa o buffer do cin
-    // // Gerar um ID único para o livro (pode ser melhorado)
-    // string id = "book_" + to_string(books.size() + 1);
-    // Book newBook(rentValue, id, currentUser.getId(), name, description, idiom, recommendedAge, genre, false);
-    // books.push_back(newBook);
-    // cout << "Livro adicionado com sucesso!" << endl;
-void addVideoGame();
-    // cout << "===== Adicionar Video Game =====" << endl;
-    // cout << "Digite o nome do video game: ";
-    // getline(cin, name);
-    // cout << "Digite a descrição do video game: ";
-    // getline(cin, description);
-    // cout << "Digite o gênero do video game: ";
-    // getline(cin, genre);
-    // cout << "Digite o idioma do video game: ";
-    // getline(cin, idiom);
-    // cout << "Digite a idade recomendada para o video game: ";
-    // getline(cin, recommendedAge);
-    // cout << "Digite o valor de aluguel do video game: ";
-    // cin >> rentValue;
-    // cin.ignore(); // Limpa o buffer do cin
-    // // Gerar um ID único para o video game (pode ser melhorado)
-    // string id = "videogame_" + to_string(videoGames.size() + 1);
-    // VideoGame newVideoGame(rentValue, id, currentUser.getId(), name, description, idiom, recommendedAge, genre, false);
-    // videoGames.push  _back(newVideoGame);
-    // cout << "Video Game adicionado com sucesso!" << endl;
-void addBoardGame();
-    // cout << "===== Adicionar Board Game =====" << endl;
-    // cout << "Digite o nome do board game: ";
-    // getline(cin, name);
-    // cout << "Digite a descrição do board game: ";
-    // getline(cin, description);
-    // cout << "Digite o gênero do board game: ";
-    // getline(cin, genre); 
-    // cout << "Digite o idioma do board game: ";
-    // getline(cin, idiom);
-    // cout << "Digite a idade recomendada para o board game: ";
-    // getline(cin, recommendedAge);
-    // cout << "Digite o valor de aluguel do board game: ";
-    // cin >> rentValue;
-    // cin.ignore(); // Limpa o buffer do cin
-    // // Gerar um ID único para o board game (pode ser melhorado)
-    // string id = "boardgame_" + to_string(boardGames.size() + 1
-    // BoardGame newBoardGame(rentValue, id, currentUser.getId(), name, description, idiom, recommendedAge, genre, false);
-    // boardGames.push_back(newBoardGame);
-    // cout << "Board Game adicionado com sucesso!" << endl;
-void addMovie();
-    // cout << "===== Adicionar Filme =====" << endl;
-    // cout << "Digite o nome do filme: ";
-    // getline(cin, name);
-    // cout << "Digite a descrição do filme: ";
-    // getline(cin, description);
-    // cout << "Digite o gênero do filme: ";
-    // getline(cin, genre);
-    // cout << "Digite o idioma do filme: ";
-    // getline(cin, idiom);
-    // cout << "Digite a idade recomendada para o filme: ";
-    // getline(cin, recommendedAge);
-    // cout << "Digite o valor de aluguel do filme: ";
-    // cin >> rentValue;
-    // cin.ignore(); // Limpa o buffer do cin
-    // // Gerar um ID único para o filme (pode ser melhorado)
-    // string id = "movie_" + to_string(movies.size() + 1);
-    // Movie newMovie(rentValue, id, currentUser.getId(), name, description, idiom, recommendedAge, genre, false);
-    // movies.push_back(newMovie);
-    // cout << "Filme adicionado com sucesso!" << endl;
 
-//PROFILE, MY PRODUCTS, RENTED PRODUCTS, LOGOUT PAGES
-void profilePage();
-    // cout << "===== Perfil do Usuário =====" << endl;
-    // cout << "1. Ver Informações do Perfil" << endl;
-    // cout << "2. Editar Informações do Perfil" << endl;
-    // cout << "3. Deletar Conta" << endl;
-    // cout << "3. Voltar ao Menu Principal" << endl;
-    // cout << "Escolha uma opcao: ";
-void myProductsPage();
-    // cout << "===== Meus Produtos =====" << endl;
-    // cout << "1. Ver Meus Produtos" << endl;
-    // cout << "2. Remover Produto" << endl;
-    // cout << "3. Voltar ao Menu Principal" << endl;
-    // cout << "Escolha uma opcao: ";
-void rentedProductsPage();
-    // cout << "===== Produtos Alugados =====" << endl;
-    // cout << "1. Ver Produtos Alugados" << endl;
-    // cout << "2. Devolver Produto" << endl;
-    // cout << "3. Voltar ao Menu Principal" << endl;
-    // cout << "Escolha uma opcao: ";
-void logOutPage();
-    // cout << "Você saiu com sucesso!" << endl;
-    // cout << "============================" << endl;  
+// --- Funções de Ação ---
 
-//RENTAL PAGE
-void rentProductPage();
-    // cout << "===== Alugar Produto =====" << endl;
-    // cout << "Digite o ID do produto que deseja alugar: ";
-    // getline(cin, productId);
-    // // Lógica para alugar o produto
-    // cout << "Produto alugado com sucesso!" << endl;
-    // cout << "==========================" << endl;
+void cadastrarNovoCliente(Repositorio& repositorio) {
+    std::string cpf, nome, email, aniversario;
+    
+    std::cout << "-- Novo Cliente --" << std::endl;
+    std::cout << "CPF: ";
+    std::getline(std::cin, cpf);
+    std::cout << "Nome Completo: ";
+    std::getline(std::cin, nome);
+    std::cout << "Email: ";
+    std::getline(std::cin, email);
+    std::cout << "Data Nasc. (AAAA-MM-DD): ";
+    std::getline(std::cin, aniversario);
 
+    // 1. Cria o objeto POO (na memória)
+    User novoUser(email, cpf, nome, aniversario);
+
+    // 2. Entrega ao Repositório para salvar no banco
+    if (repositorio.registerUser(&novoUser)) {
+        std::cout << "Cliente cadastrado com sucesso! (ID: " << novoUser.getId() << ")" << std::endl;
+    } else {
+        std::cout << "ERRO: Falha ao cadastrar cliente." << std::endl;
+    }
+}
+
+// (Função de exemplo - você precisa implementar a captura de dados)
+void cadastrarNovoLivro(Repositorio& repositorio) {
+    std::cout << "ERRO: Esta função ainda não foi implementada." << std::endl;
+    // --- COMO IMPLEMENTAR ---
+    // 1. Peça ao usuário todos os 9 campos (rentValue, owner, name, ... author, numPages)
+    // 2. Crie o objeto: Book* novoLivro = new Book(rentValue, owner, ...);
+    // 3. Chame o repositório: repositorio.cadastrarProduto(novoLivro);
+    // 4. Lembre-se do 'delete novoLivro;'
+}
+
+void listarProdutos(Repositorio& repositorio) {
+    std::string categoria;
+    std::cout << "Qual categoria? (BOOK, MOVIE, VIDEOGAME, BOARDGAME): ";
+    std::getline(std::cin, categoria);
+    
+    // 2. Pede ao Repositório para fazer o SELECT e imprimir
+    repositorio.listProducts(categoria);
+}
+
+
+// =======================================================
+// === PROGRAMA PRINCIPAL ===
+// =======================================================
 int main() {
-    //IMPLEMENTAÇÃO DAS FUNÇÕES AQUI!!!!!!!!!!!!!!!!
-    User daniel(
-    "daniel@example.com",
-    "123.456.789-00",
-    "Daniel Acioly",
-    "01/01/2000");
+    // 1. Cria o Repositório.
+    // O construtor dele (em Repositorio.cpp) abre o banco.
+    Repositorio repositorio("locadora.db");
 
-    cout << "User Created:" << endl;
-    cout << "Fullname: " << daniel.getFullname() << endl;
+    // 2. Manda o Repositório criar as tabelas (se não existirem)
+    repositorio.tablesStart();
+
+    int escolha, subEscolha;
+
+    do {
+        mostrarMenuPrincipal();
+        std::cin >> escolha;
+        limparBuffer(); // Sempre limpe o buffer após um 'cin >>'
+
+        switch (escolha) {
+            case 1: // Gerenciar Clientes
+                do {
+                    mostrarMenuClientes();
+                    std::cin >> subEscolha;
+                    limparBuffer();
+                    
+                    if (subEscolha == 1) {
+                        cadastrarNovoCliente(repositorio);
+                    } else if (subEscolha == 2) {
+                        repositorio.listUsers(); // Chama o Repositório direto
+                    }
+                } while (subEscolha != 9);
+                break;
+
+            case 2: // Gerenciar Produtos
+                do {
+                    mostrarMenuProdutos();
+                    std::cin >> subEscolha;
+                    limparBuffer();
+                    
+                    if (subEscolha == 1) {
+                        cadastrarNovoLivro(repositorio);
+                    } else if (subEscolha == 2) {
+                        listarProdutos(repositorio);
+                    }
+                } while (subEscolha != 9);
+                break;
+            
+            case 3: // Gerenciar Aluguéis
+                std::cout << "Menu de Aluguéis ainda não implementado." << std::endl;
+                break;
+        }
+
+    } while (escolha != 0);
+
+    std::cout << "Saindo do programa..." << std::endl;
+    
+    // 3. Fim do programa.
+    // O destrutor do 'repositorio' (em Repositorio.cpp)
+    // será chamado automaticamente, fechando o banco.
     return 0;
 }

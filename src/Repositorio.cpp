@@ -4,10 +4,10 @@
 #include <iostream>         
 #include <string>           
 
-#include "Book.h"
-#include "Movie.h"
-#include "video_game.h"
-#include "board_game.h"
+#include "Product\Book.h"
+#include "Product\Movie.h"
+#include "Product\video_game.h"
+#include "Product\board_game.h"
 
 static int callback_print_lines(void* data, int argc, char** argv, char** azColName){
     // 'argc' = number of columns
@@ -118,22 +118,22 @@ bool Repositorio::registerRental(Rental* rental) {
     return false;
 }
 
-bool Repositorio::registerProduct(Product* produto) {
-    if (!db || !produto) return false;
+bool Repositorio::registerProduct(Product* product) {
+    if (!db || !product) return false;
 
     // 1. Discover the TYPE (using the pure virtual function)
-    std::string type = produto->getType(); // "BOOK", "MOVIE", etc.
+    std::string type = product->getType(); // "BOOK", "MOVIE", etc.
 
     // 2. Save to the PARENT table (ITEM)
     // Build the SQL using getters from Product.h
     std::string sql_pai = "INSERT INTO ITEM (NAME, DESCRIPTION, OWNER, GENRE, IDIOM, RENT_VALUE, RECOMMENDED_AGE, TYPE, STATUS) VALUES ('"
-                        + produto->getName() + "', '"
-                        + produto->getDescription() + "', '"
-                        + produto->getOwner() + "', '"
-                        + produto->getGenre() + "', '"
-                        + produto->getIdiom() + "', "
-                        + std::to_string(produto->getRentValue()) + ", '"
-                        + produto->getRecommendedAge() + "', '"
+                        + product->getName() + "', '"
+                        + product->getDescription() + "', '"
+                        + product->getOwner() + "', '"
+                        + product->getGenre() + "', '"
+                        + product->getIdiom() + "', "
+                        + std::to_string(product->getRentValue()) + ", '"
+                        + product->getRecommendedAge() + "', '"
                         + type + "', 'Disponivel');";
     
     if (!executeSQL(sql_pai)) {
@@ -145,21 +145,21 @@ bool Repositorio::registerProduct(Product* produto) {
     long long id = sqlite3_last_insert_rowid(db);
     
     // Update the C++ object (in memory) with the real ID from the database
-    produto->setId(static_cast<int>(id));
+    product->setId(static_cast<int>(id));
 
     // 4. Save to the specific CHILD table
     std::string sql_filha;
     
     if (type == "BOOK") {
         // If it's "BOOK", we can safely cast the pointer
-        Book* livro = static_cast<Book*>(produto);
+        Book* livro = static_cast<Book*>(product);
         sql_filha = "INSERT INTO BOOK (ITEM_ID, AUTHOR, PAGE_NUM) VALUES ("
                   + std::to_string(id) + ", '"
                   + livro->getAuthor() + "', "
                   + std::to_string(livro->getNumPages()) + ");";
     
     } else if (type == "MOVIE") {
-        Movie* filme = static_cast<Movie*>(produto);
+        Movie* filme = static_cast<Movie*>(product);
         sql_filha = "INSERT INTO MOVIE (ITEM_ID, DIRECTOR, MAIN_ACTORS, DURATION) VALUES ("
                   + std::to_string(id) + ", '"
                   + filme->getDirector() + "', '"
@@ -167,7 +167,7 @@ bool Repositorio::registerProduct(Product* produto) {
                   + std::to_string(filme->getDuration()) + ");";
     
     } else if (type == "VIDEOGAME") {
-        Video_Game* jogo = static_cast<Video_Game*>(produto);
+        Video_Game* jogo = static_cast<Video_Game*>(product);
         sql_filha = "INSERT INTO VIDEOGAME (ITEM_ID, STYLE, PLATAFORM, DURATION, PLAYERS_NUM) VALUES ("
                   + std::to_string(id) + ", '"
                   + jogo->getStyle() + "', '"
@@ -176,7 +176,7 @@ bool Repositorio::registerProduct(Product* produto) {
                   + std::to_string(jogo->getNumPlayers()) + ");";
     
     } else if (type == "BOARDGAME") {
-        Board_Game* jogo = static_cast<Board_Game*>(produto);
+        Board_Game* jogo = static_cast<Board_Game*>(product);
         sql_filha = "INSERT INTO BOARDGAME (ITEM_ID, STYLE, PLAYERS_NUM, DURATION) VALUES ("
                   + std::to_string(id) + ", '"
                   + jogo->getStyle() + "', "

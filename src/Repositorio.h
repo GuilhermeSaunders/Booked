@@ -3,9 +3,9 @@
 
 #include <sqlite3.h>
 #include <string>
-#include "Product.h" 
-#include "user.h"
-#include "rental.h"
+#include "Product\Product.h" 
+#include "Customer\user.h"
+#include "BusinessRules\rental.h"
 
 class Repositorio {
 private:

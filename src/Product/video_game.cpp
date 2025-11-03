@@ -25,8 +25,6 @@ Video_Game :: Video_Game(float rentValue,
         num_players(num_players),
         duration(duration){}
 
-        Video_Game::~Video_Game() = default;
-
         void Video_Game :: setStyle(std::string style) {this->style = std::move(style);}
         const std::string& Video_Game :: getStyle() const {return style;}
 

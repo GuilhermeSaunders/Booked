@@ -26,7 +26,7 @@ string User::getBirthday() const {
 int User:: getId() const {
     return this->id;
 }
-int User:: setId() const {
+void User:: setId(int id) {
     this->id = id;
 }
 

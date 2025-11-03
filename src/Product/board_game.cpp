@@ -22,7 +22,6 @@ Board_Game :: Board_Game(float rentValue,
         num_players(num_players),
         duration(duration){}
 
-        Board_Game::~Board_Game() = default;
 
         void Board_Game :: setStyle(std::string style) {this->style = std::move(style);}
         const std::string& Board_Game :: getStyle() const {return style;}
