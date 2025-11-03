@@ -287,10 +287,15 @@ bool Repositorio::registerBoardGame(Board_Game* boardgame) {
 void Repositorio::listAllProducts() {
     if (!db) return;
     
-    const char* sql = "SELECT ID, NAME, TYPE, RENT_VALUE, STATUS, OWNER_CPF FROM ITEM WHERE STATUS = 'Disponivel';";
-    char* errMsg = 0;
+    const char* sql = "SELECT I.NAME, I.TYPE, I.RENT_VALUE, I.STATUS, I.ID, "
+                      "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
+                      "FROM ITEM I "
+                      "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF;";
     
-    std::cout << "\n--- Catálogo de Produtos Disponíveis ---" << std::endl;
+    char* errMsg = 0;
+
+    std::cout << "\n--- Catálogo de Produtos  ---" << std::endl; 
+
     if (sqlite3_exec(db, sql, listProductsCallback, 0, &errMsg) != SQLITE_OK) {
         std::cerr << "Erro ao listar produtos: " << errMsg << std::endl;
         sqlite3_free(errMsg);
@@ -301,10 +306,16 @@ void Repositorio::listAllProducts() {
 void Repositorio::listProductsByType(const std::string& type) {
     if (!db) return;
 
-    std::string sql = "SELECT ID, NAME, TYPE, RENT_VALUE, STATUS, OWNER_CPF FROM ITEM WHERE STATUS = 'Disponivel' AND TYPE = '" + type + "';";
+    std::string sql = "SELECT I.NAME, I.TYPE, I.RENT_VALUE, I.STATUS, I.ID, "
+                      "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
+                      "FROM ITEM I "
+                      "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF "
+                      "WHERE I.TYPE = '" + type + "';"; // Onde o tipo ainda é filtrado
+    
     char* errMsg = 0;
 
-    std::cout << "\n--- Catálogo de " << type << "s Disponíveis ---" << std::endl;
+    std::cout << "\n--- Catálogo de " << type << "s ---" << std::endl;
+    
     if (sqlite3_exec(db, sql.c_str(), listProductsCallback, 0, &errMsg) != SQLITE_OK) {
         std::cerr << "Erro ao listar produtos: " << errMsg << std::endl;
         sqlite3_free(errMsg);

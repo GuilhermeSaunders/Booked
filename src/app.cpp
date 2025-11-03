@@ -391,11 +391,8 @@ void App::handleRentItem() {
 }
 
 // --- Outras Rotas (Stubs) ---
-
 void App::handleProfile() {
-    cout << "\n(Função 'Perfil' ainda não implementada.)" << endl;
     cout << "===== Perfil do Usuário =====" << endl;
-    cout << "ID: " << currentUser->getUser().getId() << endl;
     cout << "Nome: " << currentUser->getUser().getFullname() << endl;
     cout << "Email: " << currentUser->getUser().getEmail() << endl;
     cout << "CPF: " << currentUser->getUser().getCpf() << endl;
