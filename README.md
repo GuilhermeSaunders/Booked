@@ -15,7 +15,7 @@ No Booked, qualquer pessoa pode disponibilizar itens da própria coleção e gan
 
 ---
 
-## ⚙️ **Como executar o projeto**
+## ⚙️ **Como executar o projeto em Linux e Mac**
 
 ### 1️⃣ Clone o repositório
 ```bash
