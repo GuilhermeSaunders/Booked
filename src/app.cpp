@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits> 
 #include <string> 
+#include <cstdlib> 
 
 // --- Construtor e Destrutor ---
 
@@ -420,4 +421,9 @@ void App::handleLogout() {
     delete currentUser; 
     currentUser = nullptr;
     cout << "\nVocê saiu com sucesso." << endl;
+}
+
+// Limpar o Terminal
+void App::clearScreen() {
+    system("clear");
 }

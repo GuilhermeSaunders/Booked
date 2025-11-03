@@ -26,6 +26,7 @@ private:
 
     // Utilitário
     void clearInputBuffer();
+    void clearScreen();
     string getStringLine(const string& prompt);
     int getInt(const string& prompt);
     float getFloat(const string& prompt);
