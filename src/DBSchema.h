@@ -6,7 +6,7 @@ namespace DBSchema {
     // Usamos CPF como Chave Primária, pois é uma string única
     static const char* CUSTOMER = 
         "CREATE TABLE IF NOT EXISTS CUSTOMER ("
-        "    ID        INT PRIMARY KEY AUTOINCREMENT,"
+        "    ID        INTEGER PRIMARY KEY AUTOINCREMENT,"
         "    CPF       TEXT NOT NULL,"
         "    NAME      TEXT NOT NULL,"
         "    EMAIL     TEXT NOT NULL,"
