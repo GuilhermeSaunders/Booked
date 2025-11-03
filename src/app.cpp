@@ -288,6 +288,7 @@ void App::collectCommonProductData(string& name, string& desc, string& genre, st
 }
 
 void App::handleAddBook() {
+    clearScreen();
     cout << "\n--- Adicionar Livro ---" << endl;
     string name, desc, genre, idiom, recAge, author;
     float rentValue;
@@ -308,6 +309,7 @@ void App::handleAddBook() {
 }
 
 void App::handleAddMovie() {
+    clearScreen();
     cout << "\n--- Adicionar Filme ---" << endl;
     string name, desc, genre, idiom, recAge, director, mainActors;
     float rentValue;
@@ -329,6 +331,7 @@ void App::handleAddMovie() {
 }
 
 void App::handleAddVideoGame() {
+    clearScreen();
     cout << "\n--- Adicionar Videogame ---" << endl;
     string name, desc, genre, idiom, recAge, style, platform;
     float rentValue;
@@ -351,6 +354,7 @@ void App::handleAddVideoGame() {
 }
 
 void App::handleAddBoardGame() {
+    clearScreen();
     cout << "\n--- Adicionar Jogo de Tabuleiro ---" << endl;
     string name, desc, genre, idiom, recAge, style;
     float rentValue;
@@ -400,6 +404,7 @@ void App::handleRentItem() {
 
 // --- Outras Rotas (Stubs) ---
 void App::handleProfile() {
+    clearScreen();
     cout << "===== Perfil do Usuário =====" << endl;
     cout << "Nome: " << currentUser->getUser().getFullname() << endl;
     cout << "Email: " << currentUser->getUser().getEmail() << endl;
@@ -407,12 +412,14 @@ void App::handleProfile() {
     cout << "Username: " << currentUser->getUsername() << endl;
 }
 void App::handleMyProducts() {
+    clearScreen();
     // 1. Obter o CPF do usuário que está logado na sessão
     std::string cpfDoDono = currentUser->getUser().getCpf();
     // 2. Chamar a nova função do repositório
     db.listProductsByOwner(cpfDoDono);
 }
 void App::handleRentedProducts() {
+    clearScreen();
     // 1. Obter o ID do usuário que está logado na sessão
     int customerId = currentUser->getUser().getId();
 
