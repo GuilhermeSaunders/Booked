@@ -1,7 +1,7 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 #include <string>
-#include "../Customer/account.h"
+#include "account.h"
 
 using namespace std;
 

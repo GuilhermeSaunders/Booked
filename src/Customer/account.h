@@ -1,34 +1,31 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
-#include <string>
+#include <string> // ADICIONE ISSO
 #include "user.h"
-using namespace std;
+
+// using namespace std; // DELETE ISSO
 
 class Account{
-    private:
-    string id;         // Unique account identifier
-    size_t hash;       // Password hash for authentication
-    string username;   // Account username    
+private:
+    std::string id;         // ADICIONE std::
+    size_t hash;       
+    std::string username;   // ADICIONE std::
     User user;
 
-    public:
-    Account(const string& i_id,
+public:
+    Account(const std::string& i_id,    // ADICIONE std::
                  const size_t& i_hash,
-                 const string& i_username,
+                 const std::string& i_username, // ADICIONE std::
                  const User& i_user);
 
     const size_t& getHash() const;
-    const string& getId() const;
-    const string& getUsername() const;
+    const std::string& getId() const;       // ADICIONE std::
+    const std::string& getUsername() const; // ADICIONE std::
     const User& getUser() const;
 
-
-    // Update methods - UPDATE
-    bool change_password(const size_t& current_hash, const size_t& new_hash); // Change password
-    bool change_username(const string& new_username); // Change username
-
-    // Delete method - DELETE
-    bool delete_account(const string& current_username, const size_t& current_hash); // Delete account if credentials match
-
+    // Métodos
+    bool change_password(const size_t& current_hash, const size_t& new_hash);
+    bool change_username(const std::string& new_username); // ADICIONE std::
+    bool delete_account(const std::string& current_username, const size_t& current_hash); // ADICIONE std::
 };
 #endif

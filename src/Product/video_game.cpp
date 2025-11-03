@@ -1,7 +1,7 @@
 #include "video_game.h"
 #include <utility> // Para std::move
 
-Video_Game :: Video_Game(float rentValue,
+Video_Game::Video_Game(float rentValue,
                         std::string owner,
                         std::string name,
                         std::string description,  
@@ -12,7 +12,6 @@ Video_Game :: Video_Game(float rentValue,
                         std::string plataform, 
                         int duration,
                         int num_players)
-
 : Product( rentValue, 
         std::move(owner),
         std::move(name),
@@ -22,10 +21,10 @@ Video_Game :: Video_Game(float rentValue,
         std::move(genre)),
         style(std::move(style)),
         plataform(std::move(plataform)),
-        num_players(num_players),
-        duration(duration){}
-
-        Video_Game::~Video_Game() = default;
+        duration(duration),
+        num_players(num_players)
+{}
+       
 
         void Video_Game :: setStyle(std::string style) {this->style = std::move(style);}
         const std::string& Video_Game :: getStyle() const {return style;}

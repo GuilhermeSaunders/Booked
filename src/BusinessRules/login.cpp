@@ -40,11 +40,9 @@ void Login::logout() {
 
 bool Login::isLoggedIn() {
 
-    if (loggedIn = true) {
-
+    if (loggedIn == true) {
         return true;
     } else {
-
         return false;
     }
 }

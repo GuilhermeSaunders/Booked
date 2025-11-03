@@ -1,33 +1,36 @@
 #ifndef USER_H
 #define USER_H
-#include <string>
-using namespace std;
+#include <string> // ADICIONE ISSO
+
+// using namespace std; // DELETE ISSO
 
 class User {
 private:
     int id;
-    string cpf;        // User CPF
-    string fullname;   // Full name of the user
-    string email;      // User email
-    string birthday;   // user birthday
+    std::string cpf;        // ADICIONE std::
+    std::string fullname;   // ADICIONE std::
+    std::string email;      // ADICIONE std::
+    std::string birthday;   // ADICIONE std::
 
 public:
-    // Constructor - CREATE
-    User(const string& i_email,
-        const string& i_cpf,
-        const string& i_fullname, 
-        const string& i_birthday);
+    // Construtor
+    User(const std::string& i_email,   // ADICIONE std::
+        const std::string& i_cpf,      // ADICIONE std::
+        const std::string& i_fullname, // ADICIONE std::
+        const std::string& i_birthday);// ADICIONE std::
     
-    // Getters - READ
-    string getCpf() const;
-    string getFullname() const;
-    string getEmail() const;
-    string getBirthday() const;
+    // Getters
+    std::string getCpf() const;        // ADICIONE std::
+    std::string getFullname() const;   // ADICIONE std::
+    std::string getEmail() const;      // ADICIONE std::
+    std::string getBirthday() const;   // ADICIONE std::
     int getId() const;
     void setId(int ind);
-    void update_cpf(const string& new_cpf); // Update CPF or full name
-    void update_fullname(const string& new_fullname);
-    void update_birthday(const string& new_birthday);
+
+    // Setters
+    void update_cpf(const std::string& new_cpf); // ADICIONE std::
+    void update_fullname(const std::string& new_fullname); // ADICIONE std::
+    void update_birthday(const std::string& new_birthday); // ADICIONE std::
 };
 
 #endif

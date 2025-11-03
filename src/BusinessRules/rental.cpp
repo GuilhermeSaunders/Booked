@@ -1,73 +1,68 @@
 #include "rental.h"
-#include <utility> // Para std::move
+#include <utility> 
+#include <string>
+#include <stdio.h> 
+#include <stdlib.h> 
 
-// Methods
-    // Constructor
-    Rental::Rental(int productId, 
-                    string lender, 
-                    string borrower, 
-                    int duration_days, 
-                    string start_date, 
-                    float dailyRate)
-    : productId(productId), lender(lender), borrower(borrower), duration(duration_days), startDate(start_date), dailyRate(dailyRate);
+// CORREÇÃO: Ordem dos inicializadores batendo com o rental.h
+Rental::Rental(int productId, 
+                int borrowerId, 
+                int duration_days, 
+                std::string start_date, 
+                float dailyRate)
+:   transactionId(-1),
+    duration(duration_days),
+    borrowerId(borrowerId),
+    dailyRate(dailyRate),
+    startDate(start_date),
+    status("Pendente"),
+    productId(productId)
+{}
 
-    // Set the rental status (Rented, Available, Out of Stock...)
-    void Rental::setStatus(const string& newStatus) {
-        status = newStatus;
+// --- AS FUNÇÕES FALTANTES ESTÃO AQUI ---
+
+void Rental::setStatus(const std::string& newStatus) {
+    status = newStatus;
+}
+void Rental::setTransactionId(int id) {
+    transactionId = id;
+}
+int Rental::getTransactionId() const { return transactionId; }
+int Rental::getDuration() const {
+    return duration < 0 ? 0 : duration;
+}
+
+// --- FIM DAS FUNÇÕES FALTANTES ---
+
+int Rental::getProductId() const { return productId; }
+std::string Rental::getStatus() const { return status; }
+int Rental::getBorrowerId() const { return borrowerId; }
+float Rental::getDailyRate() const { return dailyRate; }
+std::string Rental::getStartDate() const { return startDate; }
+
+std::string Rental::calculateEndDate() {
+    int year = stoi(startDate.substr(0,4));
+    int month = stoi(startDate.substr(5,2));
+    int day = stoi(startDate.substr(8,2));
+    day += duration;
+    int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; 
+    while (day > daysInMonth[month]) {
+        day -= daysInMonth[month];
+        month++;
+        if (month > 12) { month = 1; year++; }
     }
-
-    // Getters
-    int Rental::getTransactionId() const { return transactionId; }
-    int Rental::getDuration() const {
-        return duration < 0 ? 0 : duration;
-    }
-    int Rental::getproductId() const { return productId; }
-    string Rental::getStatus() const { return status; }
-    string Rental::getLender() const { return lender; }
-    string Rental::getBorrower() const { return borrower; }
-    float Rental::getDailyRate() const { return dailyRate; }
-    string Rental::getStartDate() const { return startDate; }
-
-    // Method to calculate the end date and check if it is overdue
-    string Rental::calculateEndDate() {
-        // Simple example: if startDate = "2025-10-08" and duration = 7 days
-        // Here you need to convert the string into year, month, and day
-        int year = stoi(startDate.substr(0,4));
-        int month = stoi(startDate.substr(5,2));
-        int day = stoi(startDate.substr(8,2));
-
-        day += duration; // adding days
-
-        // Simple month adjustment (does not cover all cases, just an example)
-        int daysInMonth[] = {31,28,31,30,31,30,31,31,30,31,30,31};
-        while (day > daysInMonth[month - 1]) {
-            day -= daysInMonth[month - 1];
-            month++;
-            if (month > 12) {
-                month = 1;
-                year++;
-            }
-        }
-
-        char buffer[11];
-        sprintf(buffer, "%04d-%02d-%02d", year, month, day);
-        return string(buffer);
-    }
-
-    // Functionalities
-    bool Rental::isOverdue(const string& currentDate) {
-        string endDate = calculateEndDate();
-
-        if (currentDate > endDate) {
-            return true;
-        }
-        return false;
-    }
-
-    void Rental::completeRental() {
-        status = "completed";
-    }
-
-    double Rental::finalPrice() const {
-        return dailyRate * duration;
-    }
+    char buffer[11];
+    // CORREÇÃO: Trocado sprintf por snprintf (mais seguro)
+    snprintf(buffer, 11, "%04d-%02d-%02d", year, month, day); 
+    return std::string(buffer);
+}
+bool Rental::isOverdue(const std::string& currentDate) {
+    std::string endDate = calculateEndDate();
+    return currentDate > endDate;
+}
+void Rental::completeRental() {
+    status = "completed";
+}
+double Rental::finalPrice() const {
+    return dailyRate * duration;
+}

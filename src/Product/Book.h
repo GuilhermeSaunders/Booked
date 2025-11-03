@@ -6,8 +6,7 @@
 
 class Book : public Product
 {
-
-private:
+    private:
     int numPages;
     std::string author;
 
@@ -31,5 +30,6 @@ public:
     int getNumPages() const;
 
     std::string getType() const override {return "BOOK";};
+};
 
 #endif

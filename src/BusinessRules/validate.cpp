@@ -1,6 +1,6 @@
 #include "validate.h"
-#include "../Customer/user.h"
-#include "../Customer/account.h"
+#include "user.h"
+#include "account.h"
 #include <functional>
 #include <string>
 #include <cctype>
@@ -15,7 +15,7 @@ size_t Validate::hashPassword(const string& password) {
     return hasher(password); 
 }
 
-string Validate::generateId(int length = 6) { // generates a random ID
+string Validate::generateId(int length) { // generates a random ID
     string id;
     mt19937 rng(std::random_device{}());
     uniform_int_distribution<int> dist(0, 9);

@@ -5,11 +5,12 @@ using namespace std;
 User::User(const string& i_email,
            const string& i_cpf,
            const string& i_fullname, const string& i_birthday)
-    : cpf(i_cpf),
+    : id(-1),
+      cpf(i_cpf),
       fullname(i_fullname),
       email(i_email),
-      birthday(i_birthday),
-      id(-1){}
+      birthday(i_birthday)
+{}
 
 string User::getCpf() const { 
     return cpf; 
@@ -26,8 +27,8 @@ string User::getBirthday() const {
 int User:: getId() const {
     return this->id;
 }
-int User:: setId() const {
-    this->id = id;
+void User:: setId(int ind)  {
+    this->id = ind;
 }
 
 // Update CPF or full name based on the 'update' code (UPDATE)

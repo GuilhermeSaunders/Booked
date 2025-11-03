@@ -5,16 +5,16 @@ Product::Product(float rentValue,
                 std::string name,
                 std::string description,  std::string idiom,
                 std::string recommendedAge,  std::string genre)
-
     :   rentValue(rentValue),
         owner(std::move(owner)),
+        genre(std::move(genre)),
         name(std::move(name)),
         description(std::move(description)),
         idiom(std::move(idiom)),
         recommendedAge(std::move(recommendedAge)),
-        genre(std::move(genre)),
         id(-1),
-        isRented(false){}
+        isRented(false)
+{}
 
 void Product::setId(int id) {this->id = id;}
 int Product:: getId() const {return this-> id;}

@@ -1,6 +1,11 @@
 #ifndef VALIDATE_H
 #define VALIDATE_H
 #include <string>
+#include "user.h"  
+#include "account.h" 
+#include <string>
+
+// using namespace std; // Delete isso
 
 using namespace std;
 

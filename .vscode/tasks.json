@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build (Compilar) Projeto de Aluguel",
+      "type": "shell",
+      "command": "clang++",
+      "args": [
+        "-g",
+        "-std=c++17",
+        "-Wall",
+
+        // --- ADICIONE ESTES CAMINHOS DE INCLUSÃO ---
+        "-I", "BusinessRules",
+        "-I", "Customer",
+        "-I", "Product",
+        // ----------------------------------------
+
+        // Seus arquivos .cpp
+        "main.cpp",
+        "App.cpp",
+        "Repositorio.cpp",
+        "BusinessRules/login.cpp",
+        "BusinessRules/rental.cpp",
+        "BusinessRules/validate.cpp",
+        "Customer/account.cpp",
+        "Customer/user.cpp",
+        "Product/Product.cpp",
+        "Product/Book.cpp",
+        "Product/Movie.cpp",
+        "Product/video_game.cpp",
+        "Product/board_game.cpp",
+
+        // Saída e Linkagem
+        "-o",
+        "../meu_programa",
+        "-lsqlite3"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

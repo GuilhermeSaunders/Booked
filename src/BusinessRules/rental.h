@@ -3,37 +3,32 @@
 #include <string>
 using namespace std;
 
-
 class Rental {
 private:
     int transactionId;
     int duration;
-    int lender;
-    int borrower;
+    int borrowerId; // MUDANÇA: de string borrowerCpf para int borrowerId
     float dailyRate;
     string startDate;
     string status;
-    int productId; 
+    int productId;
 
 public:
-    // Constructor
-    Rental(int productId, string lender, string borrower, int duration_days, string start_date, float dailyRate);
+    // Construtor atualizado
+    Rental(int productId, int borrowerId, int duration_days, string start_date, float dailyRate);
 
     // Methods
     void setStatus(const string& newStatus);
-    string getStatus() const;
+    void setTransactionId(int id);
 
-    void settransactionId(int id);
-    int gettransactionId() const;
-    
+    // Getters atualizados
+    int getTransactionId() const;
     int getDuration() const;
     string getStatus() const;
-    string getLender() const;
-    string getBorrower() const;
+    int getBorrowerId() const; // MUDANÇA
     string getStartDate() const;
     float getDailyRate() const;
-    string getProductType() const {return productType;}
-    int getproductId() const;
+    int getProductId() const;
 
     // Functionalities
     bool isOverdue(const string& currentDate);
