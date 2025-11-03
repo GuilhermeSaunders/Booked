@@ -399,12 +399,18 @@ void App::handleProfile() {
     cout << "Username: " << currentUser->getUsername() << endl;
 }
 void App::handleMyProducts() {
-    cout << "\n(Função 'Meus Produtos' ainda não implementada.)" << endl;
-    // TODO: Criar db.listProductsByOwner(currentUser->getUser().getCpf())
+    // 1. Obter o CPF do usuário que está logado na sessão
+    std::string cpfDoDono = currentUser->getUser().getCpf();
+    // 2. Chamar a nova função do repositório
+    db.listProductsByOwner(cpfDoDono);
 }
 void App::handleRentedProducts() {
-    cout << "\n(Função 'Meus Aluguéis' ainda não implementada.)" << endl;
-    // TODO: Criar db.listRentalsByCustomer(currentUser->getUser().getId())
+    // 1. Obter o ID do usuário que está logado na sessão
+    int customerId = currentUser->getUser().getId();
+
+    // 2. Chamar a nova função do repositório
+    db.listRentalsByCustomer(customerId);
+    
 }
 
 // --- Rota: Logout ---

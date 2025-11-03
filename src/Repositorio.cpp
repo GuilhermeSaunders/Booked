@@ -287,7 +287,7 @@ bool Repositorio::registerBoardGame(Board_Game* boardgame) {
 void Repositorio::listAllProducts() {
     if (!db) return;
     
-    const char* sql = "SELECT I.NAME, I.TYPE, I.RENT_VALUE, I.STATUS, I.ID, "
+    const char* sql = "SELECT I.NAME, I.TYPE, I.GENRE, I.DESCRIPTION, I.RENT_VALUE, I.STATUS, I.ID, "
                       "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
                       "FROM ITEM I "
                       "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF;";
@@ -306,7 +306,7 @@ void Repositorio::listAllProducts() {
 void Repositorio::listProductsByType(const std::string& type) {
     if (!db) return;
 
-    std::string sql = "SELECT I.NAME, I.TYPE, I.RENT_VALUE, I.STATUS, I.ID, "
+    std::string sql = "SELECT I.NAME, I.TYPE, I.DESCRIPTION, I.GENRE, I.RENT_VALUE, I.STATUS, I.ID, "
                       "C.NAME AS 'Dono(a)', C.EMAIL AS 'Email do Dono' "
                       "FROM ITEM I "
                       "JOIN CUSTOMER C ON I.OWNER_CPF = C.CPF "
@@ -354,4 +354,49 @@ bool Repositorio::updateItemStatus(int itemId, const std::string& newStatus) {
        << "' WHERE ID = " << itemId << ";";
     
     return executeSQL(ss.str());
+}
+void Repositorio::listProductsByOwner(const std::string& ownerCpf) {
+    if (!db) return;
+    std::string sql = "SELECT NAME, TYPE, RENT_VALUE, STATUS, ID "
+                      "FROM ITEM "
+                      "WHERE OWNER_CPF = '" + ownerCpf + "';";
+    
+    char* errMsg = 0;
+
+    std::cout << "\n--- Meus Produtos Cadastrados ---" << std::endl;
+    
+    if (sqlite3_exec(db, sql.c_str(), listProductsCallback, 0, &errMsg) != SQLITE_OK) {
+        std::cerr << "Erro ao listar meus produtos: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    }
+    std::cout << "------------------------------------" << std::endl;
+}
+void Repositorio::listRentalsByCustomer(int customerId) {
+    if (!db) return;
+
+    // SQL: Seleciona as colunas mais importantes do aluguel
+    // e usa um JOIN para buscar o nome do produto na tabela ITEM.
+    // Filtra tudo pelo ID do cliente que está logado.
+    std::string sql = "SELECT "
+                      "  R.ID AS 'ID_do_Aluguel', "
+                      "  I.NAME AS 'Produto', "
+                      "  R.START_DATE AS 'Data_Inicio', "
+                      "  R.DURATION AS 'Dias', "
+                      "  R.DAILY_RATE AS 'Diaria_R$', "
+                      "  R.STATUS AS 'Status_Aluguel' "
+                      "FROM RENTALS R "
+                      "JOIN ITEM I ON R.ITEM_ID = I.ID "
+                      "WHERE R.CUSTOMER_ID = " + std::to_string(customerId) + ";";
+    
+    char* errMsg = 0;
+
+    std::cout << "\n--- Meus Aluguéis (Ativos e Passados) ---" << std::endl;
+    
+    // Reutilizamos o mesmo callback de listagem.
+    // Ele vai imprimir as colunas que definimos (ex: 'ID_do_Aluguel', 'Produto')
+    if (sqlite3_exec(db, sql.c_str(), listProductsCallback, 0, &errMsg) != SQLITE_OK) {
+        std::cerr << "Erro ao listar meus aluguéis: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    }
+    std::cout << "------------------------------------" << std::endl;
 }

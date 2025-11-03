@@ -43,6 +43,8 @@ public:
     // --- Funções de Produto (READ) ---
     void listAllProducts(); // Lista todos
     void listProductsByType(const std::string& type); // Lista por tipo (BOOK, MOVIE, etc)
+    void listProductsByOwner(const std::string& ownerCpf); 
+    void listRentalsByCustomer(int customerId);
 
     // --- Funções de Rental ---
     bool registerRental(Rental* rental);
