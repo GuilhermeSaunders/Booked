@@ -1,5 +1,5 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '../booked_system'
+binary-path:     '../meu_programa'
 relocations:     []
 ...

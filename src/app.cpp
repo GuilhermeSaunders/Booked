@@ -562,7 +562,7 @@ bool App::handleProfile() {
  */
 void App::handleMyProducts() {
     clearScreen();
-    cout << "\n--- Meus Produtos Cadastrados ---" << endl;
+    
 
     std::string ownerCpf = currentUser->getUser().getCpf();
     db.listProductsByOwner(ownerCpf);
