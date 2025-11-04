@@ -38,5 +38,5 @@ g++ -std=c++17 -I./src -I./src/BusinessRules -I./src/Customer -I./src/Product \s
 * **POO (Programação Orientada a Objetos)**: encapsulamento, herança, polimorfismo.
 * **CRUD**: gerenciamento de dados (Create, Read, Update, Delete).
 * **Arquitetura modular**: separação entre entidades (usuários e produtos), regras de negócio (login, validação, aluguel) e persistência (repositório e banco de dados).
-* **Composição e injeção de dependência**: App controla o fluxo e recebe Repositorio como dependência.
+* **Composição e injeção de dependência**: App controla o fluxo e recebe Repository como dependência.
 * **Validação e segurança**: Login e Validate garantem integridade dos dados e autenticação segura.
