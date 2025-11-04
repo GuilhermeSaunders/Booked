@@ -1,130 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booked — Entretenimento Reinventado</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booked — Entretenimento Reinventado</title>
 
-  <style>
-    :root {
-      --primary: #1b3c88;
-      --secondary: #3ba47a;
-      --accent: #f59f00;
-      --light: #f4f6fb;
-      --dark: #202020;
-    }
+<style>
+:root {
+  --primary: #1b3c88;
+  --secondary: #3ba47a;
+  --accent: #f59f00;
+  --light: #f4f6fb;
+  --dark: #202020;
+}
 
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--light);
-      color: var(--dark);
-      line-height: 1.6;
-    }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--light);
+  color: var(--dark);
+  line-height: 1.6;
+}
 
-    header {
-      padding: 80px 20px;
-      text-align: center;
-      background: var(--primary);
-      color: white;
-    }
+header {
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--primary);
+  color: white;
+}
 
-    header img {
-      width: 160px;
-      margin-bottom: 20px;
-    }
+header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
 
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+}
 
-    header p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-      max-width: 700px;
-      margin: 0 auto;
-    }
+.container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
+h2 {
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-weight: 600;
+}
 
-    h2 {
-      font-size: 2.2rem;
-      color: var(--primary);
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
+section {
+  margin-bottom: 60px;
+}
 
-    section {
-      margin-bottom: 60px;
-    }
+.features {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
 
-    .features {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    }
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  border: 1px solid #e5e8f0;
+  transition: .2s;
+}
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      border: 1px solid #e5e8f0;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    }
+.note {
+  background: #fff8d9;
+  padding: 15px;
+  border-left: 5px solid var(--accent);
+  margin-bottom: 40px;
+  border-radius: 6px;
+}
 
-    footer {
-      background: var(--primary);
-      color: white;
-      text-align: center;
-      padding: 25px;
-      font-size: 0.9rem;
-      margin-top: 50px;
-    }
+/* ----- CARROSSEL ----- */
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  overflow: hidden;
+}
 
-    a {
-      color: var(--primary);
-      font-weight: bold;
-      text-decoration: none;
-    }
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
 
-    a:hover {
-      text-decoration: underline;
-    }
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
 
-    .note {
-      background: #fff8d9;
-      padding: 15px;
-      border-left: 5px solid var(--accent);
-      margin-bottom: 40px;
-      border-radius: 6px;
-    }
-  </style>
+.carousel-track img {
+  width: 350px;
+  height: 220px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  transition: .2s;
+}
+
+.carousel-track img:hover {
+  transform: scale(1.03);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 28px;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.carousel-dots {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+  display: inline-block;
+  border-radius: 50%;
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.dot.active { background: var(--primary); }
+
+/* Footer */
+footer {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 25px;
+  font-size: .9rem;
+  margin-top: 50px;
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
+
+.image-modal.close-btn {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  font-weight: bold;
+}
+a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+a:hover {
+  color: var(--secondary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <h1>Booked</h1>
-  <p>Um novo jeito de viver histórias, aventuras e boas memórias — alugando o que te diverte.</p>
+  <p>Um novo jeito de viver histórias e boas memórias — alugando o que te diverte.</p>
 </header>
 
 <div class="container">
 
   <div class="note">
-    🔔 <strong>Importante:</strong> O Booked é apenas um facilitador.  
-    As transações financeiras são realizadas diretamente entre as partes do processo.
+    🔔 <strong>Importante:</strong> O Booked é apenas um facilitador. As transações são feitas diretamente entre as partes.
   </div>
 
   <section>
@@ -134,7 +226,7 @@
       <strong>livros, videogames, jogos de tabuleiro e filmes</strong> entre pessoas.  
       Nosso objetivo é reviver o prazer de explorar histórias e mundos físicos, 
       sem precisar comprar tudo.
-    </p>
+    </p>  
   </section>
 
   <section>
@@ -160,54 +252,86 @@
     <h2>Código do Projeto</h2>
     <p>
       Dá uma olhada no nosso código! Vai ser um prazer ter um feedback seu! 
-      <br><br>
+      <br>
       <a href="https://github.com/GuilhermeSaunders/Booked" target="_blank">
-        Acesse o repositório no GitHub
+        Acesse o repositório no GitHub!
       </a>
     </p>
   </section>
 
   <section>
     <h2>Vídeo no Youtube</h2>
+    <p>Em breve 🎥</p>
   </section>
 
   <section>
     <h2>Relatório do Projeto</h2>
       <p>
-        Esse relatório detalha toda a estrutura do Booked, explicando as decisões tomadas durante o desenvolvimento do projeto.
-      <br><br>
-      <a href="https://docs.google.com/document/d/1q4TzQ8IAvzLd2PoQMo9DnQdMEXjEPI0pbYIQ1OxQ7QY/edit?usp=sharing" target="_blank">
-        Veja aqui o relatório completo
-      </a>
+      Esse aqui é o nosso relatório detalhado do projeto, explicando as decisões ao longo do processo de desenvolvimento e a estrutura do código.
+      <br>
+    <a href="https://docs.google.com/document/d/1q4TzQ8IAvzLd2PoQMo9DnQdMEXjEPI0pbYIQ1OxQ7QY/edit?usp=sharing" target="_blank">
+      Clique aqui para ver o relatório do nosso projeto!
+    </a>
     </p>
   </section>
 
   <section>
-    <h2>Guia para Execução no Terminal</h2>
-    <p>
-      Para executar o Booked no seu terminal, siga os passos abaixo:
-      <br><br>
-      1. Clone o repositório do GitHub:<br>
-      <code>git clone</code><br>
-      2. Acesse o diretório do projeto:<br>
-      <code>cd Booked</code><br>
-      3. Compile o Código:<br>
-      <code>g++ -std=c++17 -I./src -I./src/BusinessRules -I./src/Customer -I./src/Product \
-src/*.cpp src/BusinessRules/*.cpp src/Customer/*.cpp src/Product/*.cpp -o booked_system -lsqlite3
-</code><br>
-      4. Execute o programa:<br>
-      <code>./booked_system</code>
-      <br><br>
-      Certifique-se de ter o compilador g++ instalado no seu sistema!
-      Aproveite a experiência! 
-    </p>
-  </section>
+  <h2>Galeria de Fotos do Projeto</h2>
+
+  <div class="carousel">
+    <div class="carousel-track" id="track">
+      <img src="media/img1.png">
+      <img src="media/img2.png">
+      <img src="media/img3.png">
+      <img src="media/img4.png">
+      <img src="media/img5.png">
+      <img src="media/img6.png">
+      <img src="media/img7.png">
+    </div>
+
+    <button class="carousel-btn prev" id="prev">‹</button>
+    <button class="carousel-btn next" id="next">›</button>
+
+    <div class="carousel-dots">
+      <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+  </div>
+</section>
 
 </div>
+
+
+<div class="image-modal" id="imageModal">
+  <span id="closeModal" style="position:absolute;top:25px;right:30px;font-size:38px;color:#fff;cursor:pointer;">✕</span>
+  <img id="modalImage" src="">
+</div>
+
 
 <footer>
   © 2025 Booked — conectando pessoas, histórias e diversão.
 </footer>
+
+<script>
+const track = document.getElementById("track");
+document.getElementById("prev").onclick = () => track.scrollLeft -= 400;
+document.getElementById("next").onclick = () => track.scrollLeft += 400;
+
+// Modal lógica
+const modal = document.getElementById("imageModal");
+const modalImg = document.getElementById("modalImage");
+const closeBtn = document.getElementById("closeModal");
+
+document.querySelectorAll(".carousel-track img").forEach(img => {
+  img.addEventListener("click", () => {
+    modal.style.display = "flex";
+    modalImg.src = img.src;
+  });
+});
+
+closeBtn.onclick = () => modal.style.display = "none";
+modal.onclick = (e) => { if(e.target === modal) modal.style.display = "none"; };
+</script>
 
 </body>
 </html>
