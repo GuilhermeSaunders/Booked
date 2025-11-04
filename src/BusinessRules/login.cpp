@@ -1,7 +1,15 @@
-#include <iostream>
 #include "login.h"
+#include "account.h"
+#include <string>
+#include <iostream>
+#include <functional> // For std::hash
+
 using namespace std;
 
+/**
+ * @brief Default constructor, required by App.
+ * Initializes the session as logged out.
+ */
 Login::Login() {
     loggedIn = false;
     failedAttempts = 0;
@@ -9,45 +17,40 @@ Login::Login() {
 
 bool Login::login(const Account& account, const string& inputUsername, const string& inputPassword) {
     if (loggedIn) {
-
         return true;
     }
-
     if (failedAttempts >= maxFailedAttempts) {
-
         return false;
     }
 
-    if ((inputUsername == account.getUsername()) && (hashPassword(inputPassword) == account.getHash())) {
+    // Use the local hashPassword method
+    bool userMatch = (inputUsername == account.getUsername());
+    bool passMatch = (hashPassword(inputPassword) == account.getHash()); // <-- MUDADO DE VOLTA
 
+    if (userMatch && passMatch) {
         loggedIn = true;
+        failedAttempts = 0;
         return true;
     } else {
         loggedIn = false;
         failedAttempts++;
         return false;
     }
-
 }
 
 void Login::logout() {
-
-    if (loggedIn == true) {
-
-        loggedIn = false;
-    }
+    loggedIn = false;
+    failedAttempts = 0;
 }
 
 bool Login::isLoggedIn() {
-
-    if (loggedIn == true) {
-        return true;
-    } else {
-        return false;
-    }
+    return loggedIn; // Simplified logic
 }
 
+/**
+ * @brief Hashes a password using std::hash.
+ */
 size_t Login::hashPassword(const string& password) {
     hash<string> hasher;
-    return hasher(password); 
+    return hasher(password);
 }

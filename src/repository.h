@@ -6,16 +6,16 @@
 #include <utility> // Para std::pair 
 
 // Modelos de Dados
-#include "Product.h"
-#include "Book.h"
-#include "Movie.h"
+#include "product.h"
+#include "book.h"
+#include "movie.h"
 #include "video_game.h"
 #include "board_game.h"
 #include "user.h"
 #include "account.h"
 #include "rental.h"
 
-class Repositorio {
+class Repository {
 private:
     sqlite3* db; 
 
@@ -24,8 +24,8 @@ private:
 
 public:
     // Construtor e Destrutor
-    Repositorio(const std::string& db_path);
-    ~Repositorio();
+    Repository(const std::string& db_path);
+    ~Repository();
 
     // Inicializa o banco de dados
     void tablesStart();

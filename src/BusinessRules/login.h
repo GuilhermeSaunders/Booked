@@ -1,28 +1,38 @@
 #ifndef LOGIN_H
 #define LOGIN_H
+
 #include <string>
+#include <functional> // For std::hash
 #include "account.h"
 
-using namespace std;
-
+/**
+ * @class Login
+ * @brief Manages the user's authentication state (session).
+ */
 class Login {
 
-    private: 
+private:
+    bool loggedIn;
+    int failedAttempts;
+    const int maxFailedAttempts = 3;
 
-    bool loggedIn;          // True if a user is currently logged in
-    int failedAttempts;     // Counts failed login attempts
-    const int maxFailedAttempts = 3; // Maximum allowed failed attempts
+    /**
+     * @brief Hashes a password.
+     * @details This is duplicated from Validate to avoid changing app.cpp.
+     * @param password The plain-text password.
+     * @return A size_t hash.
+     */
+    size_t hashPassword(const std::string& password);
 
-    size_t hashPassword(const string& password);
-
-    public:
-
+public:
+    /**
+     * @brief Default constructor (required by App).
+     */
     Login();
 
-    bool login(const Account& account, const string& inputUsername, const string& inputPassword);
-
+    bool login(const Account& account, const std::string& inputUsername, const std::string& inputPassword);
     void logout();
-
     bool isLoggedIn();
 };
+
 #endif

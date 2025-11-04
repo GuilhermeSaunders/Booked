@@ -18,16 +18,16 @@
 
         // Seus arquivos .cpp
         "main.cpp",
-        "App.cpp",
+        "app.cpp",
         "repository.cpp",
         "BusinessRules/login.cpp",
         "BusinessRules/rental.cpp",
         "BusinessRules/validate.cpp",
         "Customer/account.cpp",
         "Customer/user.cpp",
-        "Product/Product.cpp",
-        "Product/Book.cpp",
-        "Product/Movie.cpp",
+        "Product/product.cpp",
+        "Product/book.cpp",
+        "Product/movie.cpp",
         "Product/video_game.cpp",
         "Product/board_game.cpp",
 

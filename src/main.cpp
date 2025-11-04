@@ -6,9 +6,9 @@
 #include "validate.h"
 #include "rental.h"
 
-#include "Product.h"
-#include "Book.h"
-#include "Movie.h"
+#include "product.h"
+#include "book.h"
+#include "movie.h"
 #include "board_game.h"
 #include "video_game.h"
 
@@ -17,7 +17,7 @@
 
 int main() {
     
-    Repositorio db("aluguel.db");
+    Repository db("aluguel.db");
     
     
     db.tablesStart();

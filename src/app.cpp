@@ -6,7 +6,7 @@
 
 // --- Construtor e Destrutor ---
 
-App::App(Repositorio& database) 
+App::App(Repository& database) 
     : db(database), currentUser(nullptr) {}
 
 App::~App() {
@@ -692,7 +692,7 @@ bool App::handleDeleteAccount() {
         return false; // Não deletou
     }
 
-    // 2. Tentar deletar (o Repositorio fará as verificações de aluguel)
+    // 2. Tentar deletar (o Repository fará as verificações de aluguel)
     int customerId = currentUser->getUser().getId();
     std::string accountId = currentUser->getId();
     std::string customerCpf = currentUser->getUser().getCpf();

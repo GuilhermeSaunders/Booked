@@ -1,8 +1,12 @@
 #include "account.h"
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-// Initialize account data (CREATE
+/**
+ * @brief Initializes account data using an initializer list.
+ */
 Account::Account(
     const string& i_id,
     const size_t& i_hash,
@@ -11,9 +15,12 @@ Account::Account(
     : id(i_id),
       hash(i_hash),
       username(i_username),
-      user(i_user) {}
-    
-//Change account password (UPDATE)
+      user(i_user) {
+}
+
+/**
+ * @brief Changes the account password after verifying the current one.
+ */
 bool Account::change_password(const size_t& current_hash, const size_t& new_hash) {
     if (hash != current_hash) {
         return false; // Current password incorrect
@@ -22,38 +29,47 @@ bool Account::change_password(const size_t& current_hash, const size_t& new_hash
     return true;     // Password changed successfully
 }
 
-// Change account username (UPDATE)
-bool Account::change_username(const string& new_username){
+/**
+ * @brief Changes the account username.
+ */
+bool Account::change_username(const string& new_username) {
     username = new_username; // Update username
     return true;
 }
 
+/**
+ * @brief Gets the stored password hash.
+ */
 const size_t& Account::getHash() const {
     return hash;
 }
-const string& Account::getId() const { 
-    return id; 
-}
-const string& Account::getUsername() const {
-     return username;
-}
-const User& Account::getUser() const {
-     return user;
+
+/**
+ * @brief Gets the account's unique ID.
+ */
+const string& Account::getId() const {
+    return id;
 }
 
-User& Account::getUser() {
+/**
+ * @brief Gets the account's username.
+ */
+const string& Account::getUsername() const {
+    return username;
+}
+
+/**
+ * @brief Gets a const reference to the associated User object.
+ */
+const User& Account::getUser() const {
     return user;
 }
 
-// Delete account if username and password hash match (DELETE)
-bool Account::delete_account(const string& current_username, const size_t& current_hash) {
-    if (username == current_username && hash == current_hash) {
-        id.clear();
-        username.clear();
-        hash = 0;
-        user = User("", "", "", ""); // recria o usuário “vazio”
-        return true;
-    }
-    return false;
+/**
+ * @brief Gets a mutable reference to the associated User object.
+ */
+User& Account::getUser() {
+    // This allows App.cpp to call:
+    // currentUser->getUser().update_fullname(...)
+    return user;
 }
-

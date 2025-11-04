@@ -1,36 +1,37 @@
 #ifndef USER_H
 #define USER_H
-#include <string> // ADICIONE ISSO
 
-// using namespace std; // DELETE ISSO
+#include <string>
 
+/**
+ * @class User
+ * @brief Represents the personal profile data for a customer.
+ */
 class User {
 private:
     int id;
-    std::string cpf;        // ADICIONE std::
-    std::string fullname;   // ADICIONE std::
-    std::string email;      // ADICIONE std::
-    std::string birthday;   // ADICIONE std::
+    std::string cpf;
+    std::string fullname;
+    std::string email;
+    std::string birthday;
 
 public:
-    // Construtor
-    User(const std::string& i_email,   // ADICIONE std::
-        const std::string& i_cpf,      // ADICIONE std::
-        const std::string& i_fullname, // ADICIONE std::
-        const std::string& i_birthday);// ADICIONE std::
-    
-    // Getters
-    std::string getCpf() const;        // ADICIONE std::
-    std::string getFullname() const;   // ADICIONE std::
-    std::string getEmail() const;      // ADICIONE std::
-    std::string getBirthday() const;   // ADICIONE std::
-    int getId() const;
-    void setId(int ind);
+    User(const std::string& i_email,
+         const std::string& i_cpf,
+         const std::string& i_fullname,
+         const std::string& i_birthday);
 
-    // Setters
-    void update_cpf(const std::string& new_cpf); // ADICIONE std::
-    void update_fullname(const std::string& new_fullname); // ADICIONE std::
-    void update_birthday(const std::string& new_birthday); // ADICIONE std::
+    // --- Getters ---
+    std::string getCpf() const;
+    std::string getFullname() const;
+    std::string getEmail() const;
+    std::string getBirthday() const;
+
+    int getId() const;
+
+    // --- Setters ---
+    void setId(int ind);
+    void update_fullname(const std::string& new_fullname);
 };
 
 #endif

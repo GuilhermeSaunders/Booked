@@ -8,8 +8,8 @@
 #include "validate.h" // Inclui o Validador
 
 // Inclui todos os modelos de produto para o cadastro
-#include "Book.h"
-#include "Movie.h"
+#include "book.h"
+#include "movie.h"
 #include "video_game.h"
 #include "board_game.h"
 
@@ -17,7 +17,7 @@ using namespace std;
 
 class App {
 private:
-    Repositorio& db; // Referência para o banco de dados (Injeção de Dependência)
+    Repository& db; // Referência para o banco de dados (Injeção de Dependência)
     Login loginSession;
     Validate validator;
     Account* currentUser; // Ponteiro para o usuário logado
@@ -63,7 +63,7 @@ private:
 
 public:
     // Construtor: recebe o banco de dados
-    App(Repositorio& database);
+    App(Repository& database);
 
     // Destrutor: para limpar o currentUser
     ~App();

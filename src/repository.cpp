@@ -5,6 +5,8 @@
 #include "sqlite3.h" 
 #include <sstream> // Para construir SQL
 
+using namespace std;
+
 // --- Funções de Callback (para listagem) ---
 
 // Este é um callback do SQLite. Ele é chamado para CADA linha de resultado.
@@ -24,7 +26,7 @@ static int listProductsCallback(void* data, int argc, char** argv, char** azColN
 
 // --- Construtor / Destrutor ---
 
-Repositorio::Repositorio(const std::string& db_path) : db(nullptr) {
+Repository::Repository(const std::string& db_path) : db(nullptr) {
     if (sqlite3_open(db_path.c_str(), &db) != SQLITE_OK) {
         std::cerr << "Could not open database: " << sqlite3_errmsg(db) << std::endl;
         db = nullptr;
@@ -35,7 +37,7 @@ Repositorio::Repositorio(const std::string& db_path) : db(nullptr) {
     }
 }
 
-Repositorio::~Repositorio() {
+Repository::~Repository() {
     if (db) {
         sqlite3_close(db);
         std::cout << "Database closed." << std::endl;
@@ -45,7 +47,7 @@ Repositorio::~Repositorio() {
 // --- Funções Internas ---
 
 // Executa SQL que NÃO retorna dados (CREATE, INSERT, UPDATE, DELETE)
-bool Repositorio::executeSQL(const std::string& sql) {
+bool Repository::executeSQL(const std::string& sql) {
     if (!db) return false;
     
     char* errMsg = 0;
@@ -60,7 +62,7 @@ bool Repositorio::executeSQL(const std::string& sql) {
 
 // --- Inicialização ---
 
-void Repositorio::tablesStart() {
+void Repository::tablesStart() {
     if (!db) return;
     std::cout << "Initializing tables..." << std::endl;
     executeSQL(DBSchema::CUSTOMER);
@@ -76,7 +78,7 @@ void Repositorio::tablesStart() {
 
 // --- Funções de Customer/Account ---
 
-bool Repositorio::registerUser(User* user) {
+bool Repository::registerUser(User* user) {
     if (!db || !user) return false;
 
     std::stringstream ss;
@@ -96,7 +98,7 @@ bool Repositorio::registerUser(User* user) {
     return false;
 }
 
-bool Repositorio::registerAccount(const Account& account) {
+bool Repository::registerAccount(const Account& account) {
     if (!db) return false;
 
     int customerId = account.getUser().getId(); 
@@ -110,7 +112,7 @@ bool Repositorio::registerAccount(const Account& account) {
     return executeSQL(ss.str());
 }
 
-Account* Repositorio::getAccountByUsername(const std::string& username) {
+Account* Repository::getAccountByUsername(const std::string& username) {
     if (!db) return nullptr;
     
     sqlite3_stmt* stmt;
@@ -180,7 +182,7 @@ long long registerBaseItem(sqlite3* db, Product* product) {
 }
 
 
-bool Repositorio::registerBook(Book* book) {
+bool Repository::registerBook(Book* book) {
     if (!db) return false;
     
     executeSQL("BEGIN TRANSACTION;"); // Inicia transação
@@ -207,7 +209,7 @@ bool Repositorio::registerBook(Book* book) {
     return executeSQL("COMMIT;"); // Confirma
 }
 
-bool Repositorio::registerMovie(Movie* movie) {
+bool Repository::registerMovie(Movie* movie) {
     if (!db) return false;
     
     executeSQL("BEGIN TRANSACTION;");
@@ -232,7 +234,7 @@ bool Repositorio::registerMovie(Movie* movie) {
     return executeSQL("COMMIT;");
 }
 
-bool Repositorio::registerVideoGame(Video_Game* videogame) {
+bool Repository::registerVideoGame(Video_Game* videogame) {
     if (!db) return false;
 
     executeSQL("BEGIN TRANSACTION;");
@@ -257,7 +259,7 @@ bool Repositorio::registerVideoGame(Video_Game* videogame) {
     return executeSQL("COMMIT;");
 }
 
-bool Repositorio::registerBoardGame(Board_Game* boardgame) {
+bool Repository::registerBoardGame(Board_Game* boardgame) {
     if (!db) return false;
 
     executeSQL("BEGIN TRANSACTION;");
@@ -284,7 +286,7 @@ bool Repositorio::registerBoardGame(Board_Game* boardgame) {
 
 // --- Funções de Produto (READ) ---
 
-void Repositorio::listAllProducts() {
+void Repository::listAllProducts() {
     if (!db) return;
     
     const char* sql = "SELECT I.NAME AS 'Nome', I.TYPE AS 'Tipo', I.GENRE AS 'Gênero', I.DESCRIPTION AS 'Descrição', "
@@ -304,7 +306,7 @@ void Repositorio::listAllProducts() {
     std::cout << "------------------------------------" << std::endl;
 }
 
-void Repositorio::listProductsByType(const std::string& type) {
+void Repository::listProductsByType(const std::string& type) {
     if (!db) return;
 
     std::string sql = "SELECT I.NAME AS 'Nome', I.TYPE AS 'Tipo', I.GENRE AS 'Gênero', I.DESCRIPTION AS 'Descrição', "
@@ -328,7 +330,7 @@ void Repositorio::listProductsByType(const std::string& type) {
 
 // --- Funções de Rental ---
 
-bool Repositorio::registerRental(Rental* rental) {
+bool Repository::registerRental(Rental* rental) {
     if (!db || !rental) return false;
 
     // SQL ATUALIZADO para CUSTOMER_ID (int)
@@ -348,7 +350,7 @@ bool Repositorio::registerRental(Rental* rental) {
     }
     return false;
 }
-bool Repositorio::updateItemStatus(int itemId, const std::string& newStatus) {
+bool Repository::updateItemStatus(int itemId, const std::string& newStatus) {
     if (!db) return false;
 
     std::stringstream ss;
@@ -357,7 +359,7 @@ bool Repositorio::updateItemStatus(int itemId, const std::string& newStatus) {
     
     return executeSQL(ss.str());
 }
-void Repositorio::listProductsByOwner(const std::string& ownerCpf) {
+void Repository::listProductsByOwner(const std::string& ownerCpf) {
     if (!db) return;
     std::string sql = "SELECT NAME AS 'Nome', TYPE AS 'Tipo', RENT_VALUE AS 'Valor diário de aluguel', STATUS AS 'Status', ID AS 'Id do produto'"
                       "FROM ITEM "
@@ -373,7 +375,7 @@ void Repositorio::listProductsByOwner(const std::string& ownerCpf) {
     }
     std::cout << "------------------------------------" << std::endl;
 }
-void Repositorio::listRentalsByCustomer(int customerId) {
+void Repository::listRentalsByCustomer(int customerId) {
     if (!db) return;
 
     // SQL: Seleciona as colunas mais importantes do aluguel
@@ -402,7 +404,7 @@ void Repositorio::listRentalsByCustomer(int customerId) {
     }
     std::cout << "------------------------------------" << std::endl;
 }
-std::pair<std::string, float> Repositorio::getItemStatusAndPrice(int itemId) {
+std::pair<std::string, float> Repository::getItemStatusAndPrice(int itemId) {
     if (!db) return {"ERRO", 0.0f};
 
     sqlite3_stmt* stmt;
@@ -446,7 +448,7 @@ int getItemIdFromRental(sqlite3* db, int rentalId) {
     return itemId; 
 }
 
-bool Repositorio::returnRental(int rentalId) {
+bool Repository::returnRental(int rentalId) {
     if (!db) return false;
 
     if (!executeSQL("BEGIN TRANSACTION;")) return false;
@@ -475,28 +477,28 @@ bool Repositorio::returnRental(int rentalId) {
 
     return executeSQL("COMMIT;");
 }
-bool Repositorio::updateUserFullName(int customerId, const std::string& newName) {
+bool Repository::updateUserFullName(int customerId, const std::string& newName) {
     if (!db) return false;
     std::stringstream ss;
     ss << "UPDATE CUSTOMER SET NAME = '" << newName << "' WHERE ID = " << customerId << ";";
     return executeSQL(ss.str());
 }
 
-bool Repositorio::updateAccountUsername(const std::string& accountId, const std::string& newUsername) {
+bool Repository::updateAccountUsername(const std::string& accountId, const std::string& newUsername) {
     if (!db) return false;
     std::stringstream ss;
     ss << "UPDATE ACCOUNT SET USERNAME = '" << newUsername << "' WHERE ID = '" << accountId << "';";
     return executeSQL(ss.str());
 }
 
-bool Repositorio::updateAccountPassword(const std::string& accountId, size_t newHash) {
+bool Repository::updateAccountPassword(const std::string& accountId, size_t newHash) {
     if (!db) return false;
     std::stringstream ss;
     ss << "UPDATE ACCOUNT SET PASSWORD_HASH = " << newHash << " WHERE ID = '" << accountId << "';";
     return executeSQL(ss.str());
 }
 
-bool Repositorio::deleteProduct(int itemId, const std::string& ownerCpf) {
+bool Repository::deleteProduct(int itemId, const std::string& ownerCpf) {
     if (!db) return false;
 
     std::stringstream ss;
@@ -516,7 +518,7 @@ bool Repositorio::deleteProduct(int itemId, const std::string& ownerCpf) {
 }
 
 // Esta função verifica se o usuário pode deletar a conta
-bool Repositorio::checkUserDeleteConstraints(int customerId, const std::string& customerCpf) {
+bool Repository::checkUserDeleteConstraints(int customerId, const std::string& customerCpf) {
     if (!db) return false;
 
     sqlite3_stmt* stmt;
@@ -552,7 +554,7 @@ bool Repositorio::checkUserDeleteConstraints(int customerId, const std::string& 
 }
 
 // Esta função DELETA a conta (usa transação)
-bool Repositorio::deleteUserAccount(int customerId, const std::string& accountId, const std::string& customerCpf) {
+bool Repository::deleteUserAccount(int customerId, const std::string& accountId, const std::string& customerCpf) {
     if (!db) return false;
 
     if (!checkUserDeleteConstraints(customerId, customerCpf)) {
