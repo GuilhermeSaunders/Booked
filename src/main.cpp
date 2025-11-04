@@ -23,9 +23,9 @@ int main() {
     db.tablesStart();
 
 
-    App aplicacao(db);
+    App application(db);
 
-    aplicacao.run(); 
+    application.run(); 
 
     std::cout << "Saindo do sistema. Até logo!" << std::endl;
     return 0;
