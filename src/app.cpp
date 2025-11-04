@@ -597,8 +597,6 @@ void App::handleMyProducts() {
  */
 void App::handleRentedProducts() {
     clearScreen();
-    cout << "\n--- Meus Aluguéis (Ativos e Passados) ---" << endl;
-
     int customerId = currentUser->getUser().getId();
     db.listRentalsByCustomer(customerId);
 
