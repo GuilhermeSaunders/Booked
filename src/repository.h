@@ -47,6 +47,16 @@ public:
     void listProductsByOwner(const std::string& ownerCpf); 
     void listRentalsByCustomer(int customerId);
 
+    // --- Funções de Produto (Update) ---
+    bool updateUserFullName(int customerId, const std::string& newName);
+    bool updateAccountUsername(const std::string& accountId, const std::string& newUsername);
+    bool updateAccountPassword(const std::string& accountId, size_t newHash);
+
+    // --- Funções de Produto (Delete) ---
+    bool checkUserDeleteConstraints(int customerId, const std::string& customerCpf);
+    bool deleteUserAccount(int customerId, const std::string& accountId, const std::string& customerCpf);
+    bool deleteProduct(int itemId, const std::string& ownerCpf);
+
     // --- Funções de Rental ---
     bool registerRental(Rental* rental);
     bool returnRental(int rentalId);

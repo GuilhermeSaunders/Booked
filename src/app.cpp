@@ -173,10 +173,19 @@ void App::handleLogin() {
 // --- Rota: Menu Principal (Pós-Login) ---
 
 void App::showMainMenu() {
-    clearScreen();
     string opcao;
-    while (true) {
+    bool loggedIn = true; 
+
+    while (loggedIn) { 
+        clearScreen();
         cout << "\n===== Menu Principal =====" << endl;
+        
+        // Checagem de segurança (caso o usuário tenha sido deletado)
+        if (!currentUser) {
+            loggedIn = false;
+            break;
+        }
+
         cout << "Usuário: " << currentUser->getUsername() << endl;
         cout << "--------------------------" << endl;
         cout << "1. Ver Catálogo" << endl;
@@ -194,19 +203,23 @@ void App::showMainMenu() {
         } else if (opcao == "2") {
             handleAddProduct();
         } else if (opcao == "3") {
-            handleProfile();
+
+            if (handleProfile()) { 
+                loggedIn = false; 
+            }
         } else if (opcao == "4") {
             handleMyProducts();
         } else if (opcao == "5") {
             handleRentedProducts();
         } else if (opcao == "6") {
             handleLogout();
-            break;
+            loggedIn = false;
         } else {
             cout << "Opção inválida." << endl;
         }
     }
-    showAuthMenu(); // Volta para o menu de login após o logout
+
+    showAuthMenu();
 }
 
 void App::handleAddProduct() {
@@ -418,20 +431,70 @@ void App::handleRentItem() {
 }
 
 // --- Outras Rotas (Stubs) ---
-void App::handleProfile() {
+// Em src/App.cpp
+
+bool App::handleProfile() {
     clearScreen();
-    cout << "===== Perfil do Usuário =====" << endl;
-    cout << "Nome: " << currentUser->getUser().getFullname() << endl;
-    cout << "Email: " << currentUser->getUser().getEmail() << endl;
-    cout << "CPF: " << currentUser->getUser().getCpf() << endl;
-    cout << "Username: " << currentUser->getUsername() << endl;
+    std::string opcao;
+
+    while(true) {
+        cout << "\n===== Perfil do Usuário =====" << endl;
+        cout << "Usuário: " << currentUser->getUsername() << endl;
+        cout << "Nome: " << currentUser->getUser().getFullname() << endl;
+        cout << "Email: " << currentUser->getUser().getEmail() << endl;
+        cout << "CPF: " << currentUser->getUser().getCpf() << endl;
+        cout << "-------------------------------" << endl;
+        cout << "1. Atualizar Perfil" << endl;
+        cout << "2. Deletar Conta (PERMANENTE)" << endl;
+        cout << "0. Voltar ao Menu Principal" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+        clearInputBuffer();
+
+        if (opcao == "1") {
+            handleUpdateProfile();
+        } else if (opcao == "2") {
+            bool contaDeletada = handleDeleteAccount();
+            if (contaDeletada) {
+                return true;
+            }
+        } else if (opcao == "0") {
+            break; // Volta ao menu principal
+        } else {
+            cout << "Opção inválida." << endl;
+        }
+    }
+    return false;
 }
 void App::handleMyProducts() {
     clearScreen();
-    // 1. Obter o CPF do usuário que está logado na sessão
+    cout << "\n--- Meus Produtos Cadastrados ---" << endl;
+
     std::string cpfDoDono = currentUser->getUser().getCpf();
-    // 2. Chamar a nova função do repositório
     db.listProductsByOwner(cpfDoDono);
+
+    while(true) {
+        cout << "\n--- Opções de Produtos ---" << endl;
+        cout << "1. Remover um produto (pelo ID)" << endl;
+        cout << "0. Voltar ao Menu Principal" << endl;
+        cout << "Escolha uma opcao: ";
+        
+        std::string opcao;
+        cin >> opcao;
+        clearInputBuffer();
+
+        if (opcao == "1") {
+            handleDeleteProduct();
+
+            clearScreen();
+            cout << "\n--- Lista de Produtos Atualizada ---" << endl;
+            db.listProductsByOwner(cpfDoDono);
+        } else if (opcao == "0") {
+            break; // Volta ao menu principal
+        } else {
+            cout << "Opção inválida." << endl;
+        }
+    }
 }
 void App::handleRentedProducts() {
     clearScreen();
@@ -464,6 +527,23 @@ void App::handleRentedProducts() {
     }
 }
 
+void App::handleDeleteProduct() {
+    clearScreen();
+    cout << "\n--- Remover Produto ---" << endl;
+    
+    int itemId = getInt("Digite o ID do produto que deseja remover: ");
+    std::string ownerCpf = currentUser->getUser().getCpf();
+
+    if (db.deleteProduct(itemId, ownerCpf)) {
+        cout << "Produto ID " << itemId << " removido com sucesso!" << endl;
+    } else {
+        cout << "Erro: Produto não encontrado, não pertence a você, ou está alugado." << endl;
+    }
+
+    cout << "Pressione Enter para continuar...";
+    getStringLine("");
+}
+
 void App::handleReturnItem() {
     clearScreen();
     cout << "\n--- Devolver um Item ---" << endl;
@@ -493,4 +573,146 @@ void App::handleLogout() {
 // Limpar o Terminal
 void App::clearScreen() {
     system("clear");
+}
+
+bool App::handleUpdateProfile() {
+    clearScreen();
+    std::string opcao;
+
+    while(true) {
+        cout << "\n--- Atualizar Perfil ---" << endl;
+        cout << "1. Mudar Nome Completo" << endl;
+        cout << "2. Mudar Nome de Usuário (Username)" << endl;
+        cout << "3. Mudar Senha" << endl;
+        cout << "0. Voltar ao Perfil" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+        clearInputBuffer();
+
+        if (opcao == "1") {
+            handleUpdateFullName();
+        } else if (opcao == "2") {
+            handleUpdateUsername();
+        } else if (opcao == "3") {
+            handleUpdatePassword();
+        } else if (opcao == "0") {
+            break; // Volta ao menu anterior (handleProfile)
+        } else {
+            cout << "Opção inválida." << endl;
+        }
+    }
+    // Retorna 'false' para indicar que a conta NÃO foi deletada
+    return false;
+}
+
+void App::handleUpdateFullName() {
+    clearScreen();
+    cout << "\n--- Mudar Nome Completo ---" << endl;
+    std::string newName = getStringLine("Digite seu novo nome completo: ");
+
+    if (!validator.validateFullname(newName)) {
+        cout << "Erro: Nome inválido." << endl;
+        return;
+    }
+
+    if (db.updateUserFullName(currentUser->getUser().getId(), newName)) {
+        // Atualiza também o objeto em memória!
+        currentUser->getUser().update_fullname(newName); 
+        cout << "Nome completo atualizado com sucesso!" << endl;
+    } else {
+        cout << "Erro: Não foi possível atualizar o nome." << endl;
+    }
+    cout << "Pressione Enter para continuar...";
+    getStringLine("");
+}
+
+void App::handleUpdateUsername() {
+    clearScreen();
+    cout << "\n--- Mudar Nome de Usuário ---" << endl;
+    std::string newUsername = getStringLine("Digite o novo nome de usuário: ");
+
+    if (!validator.validateUsername(newUsername)) {
+        cout << "Erro: Nome de usuário inválido (3-15 caracteres)." << endl;
+        return;
+    }
+
+    if (db.updateAccountUsername(currentUser->getId(), newUsername)) {
+        // Atualiza também o objeto em memória!
+        currentUser->change_username(newUsername);
+        cout << "Nome de usuário atualizado com sucesso!" << endl;
+    } else {
+        cout << "Erro: Não foi possível atualizar. Esse nome de usuário já pode estar em uso." << endl;
+    }
+    cout << "Pressione Enter para continuar...";
+    getStringLine("");
+}
+
+void App::handleUpdatePassword() {
+    clearScreen();
+    cout << "\n--- Mudar Senha ---" << endl;
+    std::string currentPass = getStringLine("Digite sua senha ATUAL: ");
+    
+    // 1. Verificar senha atual
+    if (validator.hashPassword(currentPass) != currentUser->getHash()) {
+        cout << "Erro: Senha atual incorreta." << endl;
+        return;
+    }
+
+    // 2. Pedir e validar nova senha
+    std::string newPass = getStringLine("Digite a NOVA senha: ");
+    if (!validator.validateStringPassword(newPass)) {
+        cout << "Senha fraca (min 6 chars, 1 maiúsc, 1 minúsc, 1 num, 1 especial)." << endl;
+        return;
+    }
+    
+    // 3. Salvar nova senha
+    size_t newHash = validator.hashPassword(newPass);
+    if (db.updateAccountPassword(currentUser->getId(), newHash)) {
+        // Atualiza também o objeto em memória!
+        currentUser->change_password(currentUser->getHash(), newHash);
+        cout << "Senha atualizada com sucesso!" << endl;
+    } else {
+        cout << "Erro: Não foi possível atualizar a senha." << endl;
+    }
+    cout << "Pressione Enter para continuar...";
+    getStringLine("");
+}
+
+bool App::handleDeleteAccount() {
+    clearScreen();
+    cout << "\n--- Deletar Conta (PERMANENTE) ---" << endl;
+    cout << "Esta ação é irreversível e irá deletar todos os seus dados e produtos." << endl;
+    std::string pass = getStringLine("Para confirmar, digite sua senha: ");
+
+    // 1. Verificar senha
+    if (validator.hashPassword(pass) != currentUser->getHash()) {
+        cout << "Erro: Senha atual incorreta. Exclusão cancelada." << endl;
+        cout << "Pressione Enter para continuar...";
+        getStringLine("");
+        return false; // Não deletou
+    }
+
+    // 2. Tentar deletar (o Repositorio fará as verificações de aluguel)
+    int customerId = currentUser->getUser().getId();
+    std::string accountId = currentUser->getId();
+    std::string customerCpf = currentUser->getUser().getCpf();
+
+    if (db.deleteUserAccount(customerId, accountId, customerCpf)) {
+        cout << "Sua conta foi deletada com sucesso. Você será desconectado." << endl;
+        
+        // 3. Fazer logout e limpar dados da sessão
+        loginSession.logout();
+        delete currentUser;
+        currentUser = nullptr;
+        
+        cout << "Pressione Enter para sair...";
+        getStringLine("");
+        return true; // SINALIZA QUE DELETOU A CONTA
+    } else {
+        cout << "Erro: Não foi possível deletar a conta." << endl;
+        cout << "(Verifique se você possui itens alugados ou emprestados)." << endl;
+        cout << "Pressione Enter para continuar...";
+        getStringLine("");
+        return false; // Não deletou
+    }
 }

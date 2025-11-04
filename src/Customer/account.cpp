@@ -41,6 +41,10 @@ const User& Account::getUser() const {
      return user;
 }
 
+User& Account::getUser() {
+    return user;
+}
+
 // Delete account if username and password hash match (DELETE)
 bool Account::delete_account(const string& current_username, const size_t& current_hash) {
     if (username == current_username && hash == current_hash) {

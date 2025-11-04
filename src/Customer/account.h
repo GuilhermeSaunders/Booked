@@ -22,6 +22,7 @@ public:
     const std::string& getId() const;       // ADICIONE std::
     const std::string& getUsername() const; // ADICIONE std::
     const User& getUser() const;
+    User& getUser();
 
     // Métodos
     bool change_password(const size_t& current_hash, const size_t& new_hash);

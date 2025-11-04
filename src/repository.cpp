@@ -475,3 +475,107 @@ bool Repositorio::returnRental(int rentalId) {
 
     return executeSQL("COMMIT;");
 }
+bool Repositorio::updateUserFullName(int customerId, const std::string& newName) {
+    if (!db) return false;
+    std::stringstream ss;
+    ss << "UPDATE CUSTOMER SET NAME = '" << newName << "' WHERE ID = " << customerId << ";";
+    return executeSQL(ss.str());
+}
+
+bool Repositorio::updateAccountUsername(const std::string& accountId, const std::string& newUsername) {
+    if (!db) return false;
+    std::stringstream ss;
+    ss << "UPDATE ACCOUNT SET USERNAME = '" << newUsername << "' WHERE ID = '" << accountId << "';";
+    return executeSQL(ss.str());
+}
+
+bool Repositorio::updateAccountPassword(const std::string& accountId, size_t newHash) {
+    if (!db) return false;
+    std::stringstream ss;
+    ss << "UPDATE ACCOUNT SET PASSWORD_HASH = " << newHash << " WHERE ID = '" << accountId << "';";
+    return executeSQL(ss.str());
+}
+
+bool Repositorio::deleteProduct(int itemId, const std::string& ownerCpf) {
+    if (!db) return false;
+
+    std::stringstream ss;
+    ss << "DELETE FROM ITEM WHERE ID = " << itemId 
+       << " AND OWNER_CPF = '" << ownerCpf 
+       << "' AND STATUS != 'Alugado';";
+
+    if (!executeSQL(ss.str())) {
+        return false; 
+    }
+
+    if (sqlite3_changes(db) == 0) {
+        return false; 
+    }
+
+    return true; 
+}
+
+// Esta função verifica se o usuário pode deletar a conta
+bool Repositorio::checkUserDeleteConstraints(int customerId, const std::string& customerCpf) {
+    if (!db) return false;
+
+    sqlite3_stmt* stmt;
+    int count = 0;
+
+    const char* sqlRentals = "SELECT COUNT(*) FROM RENTALS WHERE CUSTOMER_ID = ? AND STATUS = 'Ativo';";
+    if (sqlite3_prepare_v2(db, sqlRentals, -1, &stmt, 0) != SQLITE_OK) return false;
+    sqlite3_bind_int(stmt, 1, customerId);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    
+    if (count > 0) {
+        std::cerr << "Erro: Você precisa devolver todos os itens que está alugando (" << count << ") antes de deletar sua conta." << std::endl;
+        return false; 
+    }
+
+    const char* sqlItems = "SELECT COUNT(*) FROM ITEM WHERE OWNER_CPF = ? AND STATUS = 'Alugado';";
+    if (sqlite3_prepare_v2(db, sqlItems, -1, &stmt, 0) != SQLITE_OK) return false;
+    sqlite3_bind_text(stmt, 1, customerCpf.c_str(), -1, SQLITE_STATIC);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+
+    if (count > 0) {
+        std::cerr << "Erro: Você precisa esperar que todos os seus itens (" << count << ") sejam devolvidos antes de deletar sua conta." << std::endl;
+        return false; 
+    }
+
+    return true; // OK para deletar
+}
+
+// Esta função DELETA a conta (usa transação)
+bool Repositorio::deleteUserAccount(int customerId, const std::string& accountId, const std::string& customerCpf) {
+    if (!db) return false;
+
+    if (!checkUserDeleteConstraints(customerId, customerCpf)) {
+        return false;
+    }
+
+    if (!executeSQL("BEGIN TRANSACTION;")) return false;
+
+    bool success = true;
+
+    if (success) success = executeSQL("DELETE FROM RENTALS WHERE CUSTOMER_ID = " + std::to_string(customerId) + ";");
+
+    if (success) success = executeSQL("DELETE FROM ITEM WHERE OWNER_CPF = '" + customerCpf + "';");
+
+    if (success) success = executeSQL("DELETE FROM ACCOUNT WHERE ID = '" + accountId + "';");
+
+    if (success) success = executeSQL("DELETE FROM CUSTOMER WHERE ID = " + std::to_string(customerId) + ";");
+
+    if (success) {
+        return executeSQL("COMMIT;"); 
+    } else {
+        std::cerr << "Erro durante a transação de exclusão. Desfazendo." << std::endl;
+        executeSQL("ROLLBACK;"); 
+        return false;
+    }
+}

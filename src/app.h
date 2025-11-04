@@ -46,12 +46,20 @@ private:
         void handleAddMovie();
         void handleAddVideoGame();
         void handleAddBoardGame();
-    void handleProfile();
+    bool handleProfile();
     void handleMyProducts();
     void handleRentedProducts();
     void handleLogout();
     void handleRentItem();
     void handleReturnItem();
+    void handleDeleteProduct();
+
+    // --- Sub-Rotas de Perfil ---
+    bool handleUpdateProfile(); 
+    void handleUpdateFullName();
+    void handleUpdateUsername();
+    void handleUpdatePassword();
+    bool handleDeleteAccount();
 
 public:
     // Construtor: recebe o banco de dados

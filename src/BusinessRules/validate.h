@@ -19,11 +19,11 @@ class Validate {
     string cpf;
     string birthday;
     string fullname;
-    
-    size_t hashPassword(const string& password);
+
     string generateId(const int lenght = 6);
 
     public:
+    size_t hashPassword(const string& password);
 
     bool validateUsername(const string& username);
     bool validateStringPassword(const string& password);
